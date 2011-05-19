@@ -98,6 +98,7 @@ public class BotTest
 					if (botPos.getDistanceTo (userPos) <= 250)
 					{
 						botFire (bot.getUniqueId (), botPos, userPos);
+						break;
 					}
 				}
 			}
