@@ -41,6 +41,8 @@ public class MoveAction extends BulletAction
 		}
 		bullet.setX (Utils.lerp (initBullet.getX (), x, posInTime));
 		bullet.setY (Utils.lerp (initBullet.getY (), y, posInTime));
+		
+		bullet.setRotation (Utils.lerpDegrees (bullet.getRotation (), Utils.angleInDegrees (initBullet.getX (), initBullet.getY (), x, y), posInTime));
 
 //		System.out.println (posInTime + " : " + bullet.getX () + "/" + bullet.getY ());
 		return ! wait;

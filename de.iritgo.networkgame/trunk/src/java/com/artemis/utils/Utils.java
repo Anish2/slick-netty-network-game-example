@@ -73,6 +73,36 @@ public class Utils
 		return a + t * (b - a);
 	}
 
+	public static float lerpDegrees(float start, float end, float amount)
+    {
+        float difference = Math.abs (end - start);
+        if (difference > 180)
+        {
+            // We need to add on to one of the values.
+            if (end > start)
+            {
+                // We'll add it on to start...
+                start += 360;
+            }
+            else
+            {
+                // Add it on to end.
+                end += 360;
+            }
+        }
+
+        // Interpolate it.
+        float value = (start + ((end - start) * amount));
+
+        // Wrap it..
+        float rangeZero = 360;
+
+        if (value >= 0 && value <= 360)
+            return value;
+
+        return (value % rangeZero);
+    }
+
 	public static float distance (float x1, float y1, float x2, float y2)
 	{
 		return euclideanDistance (x1, y1, x2, y2);
