@@ -10,11 +10,12 @@ public class BulletDirector
 	private Bag<SequenceDirectorIterator> directors;
 	private Bag<Bag<BulletAction>> bulletActionBags;
 	private long timer;
-	
+	private int blaTimer;
+
 	public void update (int delta)
 	{
 		timer += delta;
-		
+
 		for (int i = 0 ; i < bullets.size () ; ++i)
 		{
 			Bullet bullet = bullets.get (i);
@@ -25,9 +26,9 @@ public class BulletDirector
 				{
 					bulletActionBags.set (i, new Bag<BulletAction> (10));
 				}
-				
+
 				boolean performDirector = true;
-				
+
 				for (int j = 0; j < bulletActions.size (); ++j)
 				{
 					BulletAction action = bulletActions.get (j);
@@ -46,18 +47,18 @@ public class BulletDirector
 					{
 						BulletAction action = seqDirector.next ();
 						bulletActions.add (action);
-						action.perform (delta, this, bullet);
+//						action.perform (delta, this, bullet);
 					}
 				}
 			}
 		}
 	}
-	
+
 	public long getTimer ()
 	{
 		return timer;
 	}
-	
+
 	public void reset ()
 	{
 	}
@@ -67,7 +68,7 @@ public class BulletDirector
 		bullets = new Bag<Bullet> (numOfBullets);
 		directors = new Bag<SequenceDirectorIterator> (numOfBullets);
 		bulletActionBags = new Bag<Bag<BulletAction>> (numOfBullets);
-		
+
 		for (int i = 0 ; i < numOfBullets ; ++i)
 		{
 			Bullet bullet = new Bullet ();
@@ -76,7 +77,7 @@ public class BulletDirector
 			directors.add (createIterator (bullet));
 		}
 	}
-	
+
 	public SequenceDirectorIterator createIterator (Bullet bullet)
 	{
 		return null;

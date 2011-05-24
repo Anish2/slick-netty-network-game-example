@@ -51,7 +51,15 @@ public class NetworkGame extends BasicTWLGameState
 	private String serverPort;
 
 	private BulletDirector bulletDirector;
-	
+
+	private int blaTimer;
+
+	private float xpos;
+
+	private float blub;
+
+	private float superBlub;
+
 	public static Sprite apple = new Sprite ("data/apple.png");
 
 
@@ -66,8 +74,8 @@ public class NetworkGame extends BasicTWLGameState
 	 */
 	public void init (GameContainer container, StateBasedGame s) throws SlickException
 	{
-		
-		
+
+
 		bulletDirector = new BulletDirector ()
 		{
 			public SequenceDirectorIterator createIterator (Bullet bullet)
@@ -75,21 +83,21 @@ public class NetworkGame extends BasicTWLGameState
 				return new BulletSeq (bullet, bulletDirector);
 			}
 		};
-		
-		bulletDirector.createBullets (400);
-		
-	
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
+		bulletDirector.createBullets (200);
+
+
+
+
+
+
+
+
+
+
+
+
+
 		container.setAlwaysRender (true);
 		container.setShowFPS (true);
 		container.setVSync (true);
@@ -125,6 +133,16 @@ public class NetworkGame extends BasicTWLGameState
 		world.update (delta);
 		bulletDirector.update (delta);
 
+		blaTimer += delta;
+		blub = (( (0.005f * 1000) * blaTimer) / 1000);
+		xpos = blub + superBlub;
+		if (blaTimer > 1500)
+		{
+			superBlub += (( (0.005f * 1000) * blaTimer) / 1000);
+			blaTimer = blaTimer - 1500;
+
+		}
+
 		if (container.getInput ().isKeyPressed (Input.KEY_TAB))
 		{
 			chatTabToggle = ! chatTabToggle;
@@ -154,10 +172,12 @@ public class NetworkGame extends BasicTWLGameState
 		for (int i = 0 ; i < bulletDirector.getBullets ().size (); ++i)
 		{
 			Bullet bullet = bulletDirector.getBullets ().get (i);
+			apple.getImage ().setRotation (bullet.getRotation ());
 			g.drawImage (apple.getImage (), (int)bullet.getX (), (int)bullet.getY ());
 		}
-		
-		
+		g.drawImage (apple.getImage (), (int)100 + xpos, (int)50);
+
+
 		g.drawString ("GameTime: " + world.getNetworkTime (), 100, 10);
 		g.drawString ("TimeShift: " + client.getGameTimeManager ().getNetworkTimeShift (), 280, 10);
 	}

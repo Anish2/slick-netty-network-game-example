@@ -34,7 +34,7 @@ public class MoveAction extends BulletAction
 			inactive ();
 			return true;
 		}
-		float posInTime = bulletTimer.getTime () / bulletTimer.getStopTime ();
+		float posInTime = (float) bulletTimer.getTime () / (float) bulletTimer.getStopTime ();
 		if (posInTime > 1)
 		{
 			posInTime = 1;
@@ -45,20 +45,20 @@ public class MoveAction extends BulletAction
 //		System.out.println (posInTime + " : " + bullet.getX () + "/" + bullet.getY ());
 		return ! wait;
 	}
-	
+
 	public MoveAction to (float x, float y)
 	{
 		this.x = x;
 		this.y = y;
 		return this;
 	}
-	
+
 	public MoveAction time (int time)
 	{
 		bulletTimer.setStopTime (time);
 		return this;
 	}
-	
+
 	public MoveAction block ()
 	{
 		wait = true;
