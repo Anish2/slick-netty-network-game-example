@@ -60,7 +60,7 @@ public class NetworkGame extends BasicTWLGameState
 
 	private float superBlub;
 
-	public static Sprite apple = new Sprite ("data/apple.png");
+	public static Sprite rocket = new Sprite ("data/rocket.png");
 
 
 	public NetworkGame (int state, String serverIp, String serverPort)
@@ -84,7 +84,7 @@ public class NetworkGame extends BasicTWLGameState
 			}
 		};
 
-		bulletDirector.createBullets (200);
+		bulletDirector.createBullets (250);
 
 
 
@@ -172,10 +172,10 @@ public class NetworkGame extends BasicTWLGameState
 		for (int i = 0 ; i < bulletDirector.getBullets ().size (); ++i)
 		{
 			Bullet bullet = bulletDirector.getBullets ().get (i);
-			apple.getImage ().setRotation (bullet.getRotation ());
-			g.drawImage (apple.getImage (), (int)bullet.getX (), (int)bullet.getY ());
+			rocket.getImage ().setRotation (bullet.getRotation () + 90);
+			g.drawImage (rocket.getImage (), (int)bullet.getX (), (int)bullet.getY ());
 		}
-		g.drawImage (apple.getImage (), (int)100 + xpos, (int)50);
+		g.drawImage (rocket.getImage (), (int)100 + xpos, (int)50);
 
 
 		g.drawString ("GameTime: " + world.getNetworkTime (), 100, 10);

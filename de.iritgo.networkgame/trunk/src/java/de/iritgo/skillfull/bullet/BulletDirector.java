@@ -11,6 +11,7 @@ public class BulletDirector
 	private Bag<Bag<BulletAction>> bulletActionBags;
 	private long timer;
 	private int blaTimer;
+	private int bulletDone;
 
 	public void update (int delta)
 	{
@@ -48,6 +49,14 @@ public class BulletDirector
 						BulletAction action = seqDirector.next ();
 						bulletActions.add (action);
 //						action.perform (delta, this, bullet);
+					}
+					else
+					{
+						++bulletDone;
+						if (bulletDone == bullets.size ())
+						{
+							System.out.println ("Done!");
+						}
 					}
 				}
 			}
