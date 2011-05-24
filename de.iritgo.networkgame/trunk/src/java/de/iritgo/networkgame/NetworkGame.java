@@ -13,8 +13,12 @@ import com.artemis.EntitySystem;
 
 import de.iritgo.simplelife.math.NumberTools;
 import de.iritgo.simplelife.string.StringTools;
+import de.iritgo.skillfull.bullet.Bullet;
+import de.iritgo.skillfull.bullet.BulletDirector;
+import de.iritgo.skillfull.bullet.SequenceDirectorIterator;
 import de.iritgo.skillfull.client.Client;
 import de.iritgo.skillfull.component.camera.Camera;
+import de.iritgo.skillfull.component.visual.sprite.Sprite;
 import de.iritgo.skillfull.render.RenderSystem;
 import de.iritgo.skillfull.server.Server;
 import de.iritgo.skillfull.twl.BasicTWLGameState;
@@ -46,6 +50,11 @@ public class NetworkGame extends BasicTWLGameState
 
 	private String serverPort;
 
+	private BulletDirector bulletDirector;
+	
+	public static Sprite apple = new Sprite ("data/apple.png");
+
+
 	public NetworkGame (int state, String serverIp, String serverPort)
 	{
 		this.serverIp = serverIp;
@@ -57,12 +66,36 @@ public class NetworkGame extends BasicTWLGameState
 	 */
 	public void init (GameContainer container, StateBasedGame s) throws SlickException
 	{
+		
+		
+		bulletDirector = new BulletDirector ()
+		{
+			public SequenceDirectorIterator createIterator (Bullet bullet)
+			{
+				return new BulletSeq (bullet, bulletDirector);
+			}
+		};
+		
+		bulletDirector.createBullets (400);
+		
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		container.setAlwaysRender (true);
 		container.setShowFPS (true);
 		container.setVSync (true);
 		// Zeitscheibe auf 20ms
 //		container.setMinimumLogicUpdateInterval (15);
-		container.setSmoothDeltas (true);
+		container.setSmoothDeltas (false);
 		map = new TiledMap ("maps/BeerMap.tmx");
 
 		world = new GameWorld ();
@@ -90,6 +123,7 @@ public class NetworkGame extends BasicTWLGameState
 	public void update (GameContainer container, StateBasedGame arg1, int delta) throws SlickException
 	{
 		world.update (delta);
+		bulletDirector.update (delta);
 
 		if (container.getInput ().isKeyPressed (Input.KEY_TAB))
 		{
@@ -117,6 +151,13 @@ public class NetworkGame extends BasicTWLGameState
 	public void render (GameContainer container, StateBasedGame arg1, Graphics g) throws SlickException
 	{
 		world.render (container, arg1, g);
+		for (int i = 0 ; i < bulletDirector.getBullets ().size (); ++i)
+		{
+			Bullet bullet = bulletDirector.getBullets ().get (i);
+			g.drawImage (apple.getImage (), (int)bullet.getX (), (int)bullet.getY ());
+		}
+		
+		
 		g.drawString ("GameTime: " + world.getNetworkTime (), 100, 10);
 		g.drawString ("TimeShift: " + client.getGameTimeManager ().getNetworkTimeShift (), 280, 10);
 	}

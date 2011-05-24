@@ -34,6 +34,7 @@ public class Position extends Component
 	{
 		this.x = position.getX ();
 		this.y = position.getY ();
+		this.rotation = position.getRotation ();
 	}
 
 	public void addX (float x)
