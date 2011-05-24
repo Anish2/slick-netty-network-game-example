@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<!-- invitro ant Build.xml //-->
+
+
+<project name="Invitro" default="de.iritgo.invitro">
+	
+	<property name="build.dir" location="${build_project}" />
+	
+	<target name="de.iritgo.invitro">
+   		<echo>
+   			Networkgame
+		</echo>
+	</target>
+	
+	<taskdef name="continuations"
+	    classname="de.matthiasmann.continuations.instrument.InstrumentationTask"
+		classpath="Continuations_full_2010-11-30_10-00.jar:asm-all-3.3.1.jar"/>
+	    
+	<target name="post-compile">
+	    <continuations verbose="true" debug="true">
+	        <fileset dir="${build.dir}"/>
+	    </continuations>
+	</target>
+</project>
