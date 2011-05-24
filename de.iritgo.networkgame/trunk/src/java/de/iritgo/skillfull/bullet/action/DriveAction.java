@@ -40,6 +40,8 @@ public class DriveAction extends BulletAction
 	{
 		bulletTimer = new BulletTimer ();
 		initBullet = new Bullet (bullet);
+		rotation = -1;
+		acceleration = 0.0f;
 		wait = false;
 	}
 
@@ -47,7 +49,7 @@ public class DriveAction extends BulletAction
 	public boolean perform (int delta, BulletDirector bulletDirector, Bullet bullet)
 	{
 		bulletTimer.update (delta);
-		int time = (int) (bulletTimer.getTime ());
+		int time = bulletTimer.getTime ();
 
 		if (! bulletTimer.isStartTimeReached ())
 			return ! wait;
@@ -57,44 +59,46 @@ public class DriveAction extends BulletAction
 			inactive ();
 			bullet.setMovedWay (movedWay);
 			bullet.setAcceleration (acceleration);
-			bullet.setRotation (rotation);
-			if (speed == 0)
-			{
-				bullet.setLastSpeed (movedWay / time);
-			}
+			if (rotation != -1)
+				bullet.setRotation (rotation);
+
+			bullet.setLastSpeed (((acceleration) * (time)) + (speed));
 			return true;
 		}
 
-		float posInTime = bulletTimer.getTime () / bulletTimer.getStopTime ();
+		float posInTime = (float) bulletTimer.getTime () / (float) bulletTimer.getStopTime ();
 		if (posInTime > 1)
 		{
 			posInTime = 1;
-			bullet.setRotation (rotation);
 		}
 		else
 		{
 			Utils.shouldRotateCounterClockwise (initBullet.getRotation (), rotation);
-			bullet.setRotation (Utils.lerp (initBullet.getRotation (), rotation, posInTime));
+			if (rotation != -1)
+				bullet.setRotation (Utils.lerp (initBullet.getRotation (), rotation, posInTime));
 		}
-		movedWay = (0.5f * acceleration * ((time + 1000) * (time + 1000))) + (speed * (time + 1000));
+
+		movedWay = (0.5f * (acceleration / 1000) * ((time) * (time))) + ((speed / 1000) * (time));
+
 		// System.out.println (time + "/" + delta + " L:" + lastCallTime +
 		// " Dif:" + (time - lastCallTime) + " LastWay" +
 		// (movedWay-lastMovedWay)
 		// + "WWay: " + movedWay + "X:" + bullet.getX ());
 		lastCallTime = time;
 		lastMovedWay = movedWay;
+
+
 		float nextPosX = Utils.getXAtEndOfRotatedLineByOrigin (0, movedWay, bullet.getRotation ());
 		float nextPosY = Utils.getYAtEndOfRotatedLineByOrigin (0, movedWay, bullet.getRotation ());
 
-		bullet.addX (nextPosX);
-		bullet.addY (nextPosY);
-
+		bullet.setX (initBullet.getX () + nextPosX);
+		bullet.setY (initBullet.getY () + nextPosY);
 		return ! wait;
 	}
 
 	public DriveAction acceleration (float acceleration)
 	{
-		this.acceleration = acceleration / 100000;
+		this.acceleration = acceleration;
 		return this;
 	}
 
@@ -131,7 +135,7 @@ public class DriveAction extends BulletAction
 
 	public DriveAction speed (float speed)
 	{
-		this.speed = speed / 1000;
+		this.speed = speed;
 		return this;
 	}
 }

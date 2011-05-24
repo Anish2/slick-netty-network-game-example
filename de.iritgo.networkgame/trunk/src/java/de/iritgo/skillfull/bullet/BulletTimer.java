@@ -11,7 +11,7 @@ public class BulletTimer
 		this.stopTime = stopTime;
 		currentTime = 0;
 	}
-	
+
 	public BulletTimer ()
 	{
 		currentTime = 0;
@@ -21,7 +21,7 @@ public class BulletTimer
 	{
 		currentTime += delta;
 	}
-	
+
 	public boolean isValid ()
 	{
 		return currentTime < stopTime;
@@ -32,7 +32,7 @@ public class BulletTimer
 		stopTime = time;
 	}
 
-	public float getTime ()
+	public int getTime ()
 	{
 		return currentTime;
 	}

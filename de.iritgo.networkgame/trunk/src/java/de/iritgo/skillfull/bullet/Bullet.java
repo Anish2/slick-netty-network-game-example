@@ -21,7 +21,7 @@ public class Bullet extends Position
 	{
 		this.acceleration = acceleration;
 	}
-	
+
 	public float getAcceleration ()
 	{
 		return acceleration;
@@ -31,7 +31,7 @@ public class Bullet extends Position
 	{
 		this.movedWay = movedWay;
 	}
-	
+
 	public float getMovedWay ()
 	{
 		return movedWay;

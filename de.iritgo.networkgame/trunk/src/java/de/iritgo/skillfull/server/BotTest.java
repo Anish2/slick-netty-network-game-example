@@ -24,19 +24,19 @@ import de.iritgo.skillfull.world.CommonWorld;
 
 public class BotTest
 {
-	
+
 	private HashMap<Entity, Tuple2<Float, Float>> bots = new HashMap<Entity, Tuple2<Float, Float>> ();
 	private Server server;
 	private CommonWorld commonWorld;
 	private Random random = new Random ();
 	private int shootTimer;
-	
+
 	public BotTest (Server server, CommonWorld commonWorld)
 	{
 		this.server = server;
 		this.commonWorld = commonWorld;
 	}
-	
+
 	private int getRandom (int length)
 	{
 		int r = 400 + random.nextInt ((int) length);
@@ -44,9 +44,9 @@ public class BotTest
 			r = (int) length - 400;
 		return r;
 	}
-	
-	
-	
+
+
+
 	public Entity createBot ()
 	{
 		Entity bot = commonWorld.getSkillFullEntityManager ().createAndroidEntity (-1);
@@ -60,7 +60,7 @@ public class BotTest
 		bots.put (bot, new Tuple2 ((float) 1.0, (float) 1.0));
 		return bot;
 	}
-	
+
 	public void update (int delta)
 	{
 		for (Entity entity : bots.keySet ())
@@ -81,9 +81,9 @@ public class BotTest
 		}
 
 		shootTimer += delta;
-		if (shootTimer > 500)
+		if (shootTimer > 1500)
 		{
-			shootTimer -= 500;
+			shootTimer -= 1500;
 			for (Entity bot : bots.keySet ())
 			{
 				Position botPos = bot.getComponent (Position.class);
@@ -93,7 +93,7 @@ public class BotTest
 					Entity user = users.get (i);
 					if (user == bot)
 						continue;
-					
+
 					Position userPos = user.getComponent (Position.class);
 					if (botPos.getDistanceTo (userPos) <= 250)
 					{
@@ -102,9 +102,9 @@ public class BotTest
 					}
 				}
 			}
-			
-			
-			
+
+
+
 		}
 	}
 	// TODO: Reduant code with usermanager
@@ -115,7 +115,7 @@ public class BotTest
 		entity.getComponent (Position.class).setLocation (botPos.getX (), botPos.getY ());
 		entity.getComponent (PositionHistory.class).setExpandableTimeRange (false);
 		entity.refresh ();
-		
+
 		EntityCreateMessage entityCreateMessage = new EntityCreateMessage ((byte) 2);
 		entityCreateMessage.setUniqueEntityId ((int) entity.getUniqueId ());
 		int tick = (int) commonWorld.getGameTimeManager ().getNetworkTime ();
@@ -127,14 +127,14 @@ public class BotTest
 		entitySegmentMoveMessage.setStartY ((int) botPos.getY ());
 		entitySegmentMoveMessage.setEndX ((int) dstPos.getX ());
 		entitySegmentMoveMessage.setEndY ((int) dstPos.getY ());
-		
-		
+
+
 		// Default shot length...
-		float x = Utils.getXAtEndOfRotatedLineByOrigin (botPos.getX (), 250, Utils.angleInDegrees 
+		float x = Utils.getXAtEndOfRotatedLineByOrigin (botPos.getX (), 250, Utils.angleInDegrees
 						(botPos.getX (), botPos.getY (), dstPos.getX (), dstPos.getY ()));
 		float y = Utils.getYAtEndOfRotatedLineByOrigin (botPos.getY (), 250, Utils.angleInDegrees
 						(botPos.getX (), botPos.getY (), dstPos.getX (), dstPos.getY ()));
-		
+
 
 		entitySegmentMoveMessage.setEndX ((int) x);
 		entitySegmentMoveMessage.setEndY ((int) y);
@@ -145,7 +145,7 @@ public class BotTest
 		float dist = Utils.distance (entitySegmentMoveMessage.getStartX (), entitySegmentMoveMessage.getStartY (),
 						entitySegmentMoveMessage.getEndX (), entitySegmentMoveMessage.getEndY ());
 		float t = (dist) / (float) (0.02 * 15);
-		
+
 
 		entitySegmentMoveMessage.setDestinationTick (tick + (int) t);
 		entitySegmentMoveMessage.setUniqueEntityId ((int) entity.getUniqueId ());
@@ -167,7 +167,7 @@ public class BotTest
 		{
 			segmentMoveSystem.calcMovement (entity, simulatedTime, true);
 		}
-		
+
 		PositionHistorySystem posHistorySystem = commonWorld.getSystemManager ().getSystem (PositionHistorySystem.class);
 		posHistorySystem.forward ();
 		posHistorySystem.process ();
