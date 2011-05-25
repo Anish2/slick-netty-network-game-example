@@ -5,6 +5,7 @@ public class BulletTimer
 	private int currentTime;
 	private int stopTime;
 	private int startTime;
+	private int overlapTime;
 
 	public BulletTimer (int stopTime)
 	{
@@ -24,7 +25,7 @@ public class BulletTimer
 
 	public boolean isValid ()
 	{
-		return currentTime < stopTime;
+		return currentTime <= stopTime;
 	}
 
 	public void setStopTime (int time)
@@ -50,5 +51,15 @@ public class BulletTimer
 	public boolean isStartTimeReached ()
 	{
 		return currentTime >= startTime;
+	}
+
+	public void setOverlapTime (int overlapTime)
+	{
+		this.overlapTime = overlapTime;
+	}
+	
+	public int getOverlapTime ()
+	{
+		return overlapTime;
 	}
 }

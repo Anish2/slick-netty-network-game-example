@@ -84,7 +84,7 @@ public class NetworkGame extends BasicTWLGameState
 			}
 		};
 
-		bulletDirector.createBullets (3000);
+		bulletDirector.createBullets (1);
 
 		container.setAlwaysRender (true);
 		container.setShowFPS (true);
@@ -122,14 +122,14 @@ public class NetworkGame extends BasicTWLGameState
 		bulletDirector.update (delta);
 
 		blaTimer += delta;
-		blub = (( (0.005f * 1000) * blaTimer) / 1000);
-		xpos = blub + superBlub;
-		if (blaTimer > 1500)
+		if (blaTimer >= 200)
 		{
-			superBlub += (( (0.005f * 1000) * blaTimer) / 1000);
-			blaTimer = blaTimer - 1500;
-
+			superBlub += (( 50f/ 1000f) * (float)blaTimer) ;
+			blaTimer = blaTimer - 200;
 		}
+		blub = (( 50f/ 1000f) * (float)blaTimer) ;
+		xpos = blub + superBlub;
+		System.out.println ("N: " + blub + ":::" + blaTimer);
 
 		if (container.getInput ().isKeyPressed (Input.KEY_TAB))
 		{
@@ -160,10 +160,14 @@ public class NetworkGame extends BasicTWLGameState
 		for (int i = 0 ; i < bulletDirector.getBullets ().size (); ++i)
 		{
 			Bullet bullet = bulletDirector.getBullets ().get (i);
-			rocket.getImage ().setRotation (bullet.getRotation () + 90);
+			if (bullet.isHeadingActive ())
+				rocket.getImage ().setRotation (bullet.getHeading () + 90);
+			else
+				rocket.getImage ().setRotation (bullet.getRotation () + 90);
+				
 			g.drawImage (rocket.getImage (), (int)bullet.getX (), (int)bullet.getY ());
 		}
-		g.drawImage (rocket.getImage (), (int)100 + xpos, (int)50);
+		g.drawImage (rocket.getImage (), (int)60 + xpos, (int)250);
 
 
 		g.drawString ("GameTime: " + world.getNetworkTime (), 100, 10);
