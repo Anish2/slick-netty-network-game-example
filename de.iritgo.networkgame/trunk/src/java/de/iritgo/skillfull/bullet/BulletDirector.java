@@ -1,23 +1,36 @@
+
 package de.iritgo.skillfull.bullet;
+
 
 import com.artemis.utils.Bag;
 
 import de.iritgo.networkgame.BulletSeq;
 
+
 public class BulletDirector
 {
+	private static boolean ACTION_DONE = true;
+
 	private Bag<Bullet> bullets;
+
 	private Bag<SequenceDirectorIterator> directors;
+
 	private Bag<Bag<BulletAction>> bulletActionBags;
-	private long timer;
-	private int blaTimer;
+
+	private BulletTimer bulletTimer;
+
 	private int bulletDone;
+
+	public BulletDirector ()
+	{
+		bulletTimer = new BulletTimer ();
+	}
 
 	public void update (int delta)
 	{
-		timer += delta;
+		bulletTimer.update (delta);
 
-		for (int i = 0 ; i < bullets.size () ; ++i)
+		for (int i = 0; i < bullets.size (); ++i)
 		{
 			Bullet bullet = bullets.get (i);
 			if (bullet != null)
@@ -28,44 +41,56 @@ public class BulletDirector
 					bulletActionBags.set (i, new Bag<BulletAction> (10));
 				}
 
-				boolean performDirector = true;
-
-				for (int j = 0; j < bulletActions.size (); ++j)
+				boolean doMoreAction = true;
+				while (doMoreAction)
 				{
-					BulletAction action = bulletActions.get (j);
-					if (action.isActive ())
+					doMoreAction = false;
+					if (bulletActions.size () == 0)
 					{
-						if (! action.perform (delta, this, bullet))
+						SequenceDirectorIterator seqDirector = directors.get (i);
+						if (! seqDirector.hasNext ())
 						{
-							performDirector = false;
+							++bulletDone;
+							if (bulletDone == bullets.size ())
+							{
+								System.out.println ("Done!");
+								break;
+							}
+						}
+
+						while (seqDirector.hasNext ())
+						{
+							BulletAction action = seqDirector.next ();
+							action.setBulletTimer (bulletTimer);
+							action.updateTime ();
+							bulletActions.add (action);
+							if (! action.isActionDone ())
+								break;
 						}
 					}
-				}
-				if (performDirector)
-				{
-					SequenceDirectorIterator seqDirector = directors.get (i);
-					if (seqDirector.hasNext ())
+
+					for (int j = 0; j < bulletActions.size (); ++j)
 					{
-						BulletAction action = seqDirector.next ();
-						bulletActions.add (action);
-//						action.perform (delta, this, bullet);
-					}
-					else
-					{
-						++bulletDone;
-						if (bulletDone == bullets.size ())
+						BulletAction action = bulletActions.get (j);
+						if (action.isInTime ())
 						{
-							System.out.println ("Done!");
+							action.perform (delta, this, bullet);
+						}
+						else
+						{
+							action.performDone (delta, this, bullet);
+							action.updateOverlapTime ();
+							bulletActions.remove (j--);
+							if (bulletActions.size () == 0)
+							{
+								doMoreAction = true;
+								break;
+							}
 						}
 					}
 				}
 			}
 		}
-	}
-
-	public long getTimer ()
-	{
-		return timer;
 	}
 
 	public void reset ()
@@ -78,7 +103,7 @@ public class BulletDirector
 		directors = new Bag<SequenceDirectorIterator> (numOfBullets);
 		bulletActionBags = new Bag<Bag<BulletAction>> (numOfBullets);
 
-		for (int i = 0 ; i < numOfBullets ; ++i)
+		for (int i = 0; i < numOfBullets; ++i)
 		{
 			Bullet bullet = new Bullet ();
 			bullets.add (bullet);

@@ -7,6 +7,8 @@ public class Bullet extends Position
 	private float acceleration;
 	private float movedWay;
 	private float lastSpeed;
+	private float heading;
+	private boolean headingActive;
 
 	public Bullet ()
 	{
@@ -15,6 +17,8 @@ public class Bullet extends Position
 	public Bullet (Bullet bullet)
 	{
 		super (bullet);
+		lastSpeed = bullet.getLastSpeed ();
+		heading = bullet.getHeading ();
 	}
 
 	public void setAcceleration (float acceleration)
@@ -45,5 +49,25 @@ public class Bullet extends Position
 	public void setLastSpeed (float lastSpeed)
 	{
 		this.lastSpeed = lastSpeed;
+	}
+
+	public void setHeading (float heading)
+	{
+		this.heading = heading;
+	}
+	
+	public float getHeading ()
+	{
+		return heading;
+	}
+	
+	public boolean isHeadingActive ()
+	{
+		return headingActive;
+	}
+	
+	public void setHeadingActive (boolean active)
+	{
+		this.headingActive = active;
 	}
 }

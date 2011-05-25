@@ -7,18 +7,22 @@ import de.iritgo.skillfull.bullet.BulletAction;
 import de.iritgo.skillfull.bullet.BulletDirector;
 import de.iritgo.skillfull.bullet.BulletTimer;
 
-public class MoveAction extends BulletAction
+public class HeadingAction extends BulletAction
 {
 	private int timer;
 	private BulletTimer bulletTimer;
 	private float x;
 	private float y;
 	private Bullet initBullet;
+	private float rotation;
+	private float fromRotation;
+	private Bullet bullet;
 
-	public MoveAction (Bullet bullet)
+	public HeadingAction (Bullet bullet)
 	{
 		bulletTimer = new BulletTimer ();
 		initBullet = new Bullet (bullet);
+		this.bullet = bullet;
 		actionDone = false;
 	}
 
@@ -27,8 +31,6 @@ public class MoveAction extends BulletAction
 	{
 		if (! bulletTimer.isValid ())
 		{
-			bullet.setX (x);
-			bullet.setY (y);
 			inactive ();
 			return actionDone = true;
 		}
@@ -40,31 +42,57 @@ public class MoveAction extends BulletAction
 		{
 			posInTime = 1;
 		}
-		bullet.setX (Utils.lerp (initBullet.getX (), x, posInTime));
-		bullet.setY (Utils.lerp (initBullet.getY (), y, posInTime));
 		
-		bullet.setRotation (Utils.lerpDegrees (bullet.getRotation (), Utils.angleInDegrees (initBullet.getX (), initBullet.getY (), x, y), posInTime));
-
-//		System.out.println (posInTime + " : " + bullet.getX () + "/" + bullet.getY ());
+		bullet.setHeading (Utils.lerpDegrees (fromRotation, rotation, posInTime));
 		return actionDone;
 	}
 
-	public MoveAction to (float x, float y)
+	public HeadingAction to (float x, float y)
 	{
 		this.x = x;
 		this.y = y;
 		return this;
 	}
+	
+	public HeadingAction rotate (float rotation)
+	{
+		this.rotation = rotation;
+		return this;
+	}
+	
+	public HeadingAction fromRotation ()
+	{
+		this.fromRotation = initBullet.getRotation ();
+		return this;
+	}
 
-	public MoveAction time (int time)
+	public HeadingAction fromHeading ()
+	{
+		this.fromRotation = initBullet.getHeading ();
+		return this;
+	}
+
+	public HeadingAction time (int time)
 	{
 		bulletTimer.setStopTime (time);
 		return this;
 	}
 
-	public MoveAction dontWait ()
+	public HeadingAction dontWait ()
 	{
 		actionDone = true;
+		return this;
+	}
+	
+	public HeadingAction active ()
+	{
+		bullet.setHeadingActive (true);
+		return this;
+	}
+
+	public HeadingAction unactive ()
+	{
+		bullet.setHeadingActive (false);
 		return this;
 	}
 }

@@ -1,6 +1,7 @@
 package de.iritgo.skillfull.bullet;
 
 import de.iritgo.skillfull.bullet.action.DriveAction;
+import de.iritgo.skillfull.bullet.action.HeadingAction;
 import de.iritgo.skillfull.bullet.action.MoveAction;
 import de.iritgo.skillfull.bullet.action.PositionAction;
 import de.iritgo.skillfull.bullet.action.TestAction;
@@ -11,6 +12,12 @@ import de.matthiasmann.continuations.SuspendExecution;
 public class SequenceDirectorIterator extends de.matthiasmann.continuations.CoIterator<BulletAction>
 {
 	private static final long serialVersionUID = 1L;
+	private Bullet bullet;
+	
+	public SequenceDirectorIterator (Bullet bullet)
+	{
+		this.bullet = bullet;
+	}
 	
 	@Override
 	protected void run () throws SuspendExecution
@@ -27,12 +34,12 @@ public class SequenceDirectorIterator extends de.matthiasmann.continuations.CoIt
 		return new TestAction (text);
 	}
 
-	protected MoveAction move (Bullet bullet)
+	protected MoveAction move ()
 	{
 		return new MoveAction (bullet);
 	}
 
-	protected DriveAction drive (Bullet bullet)
+	protected DriveAction drive ()
 	{
 		return new DriveAction (bullet);
 	}
@@ -47,4 +54,8 @@ public class SequenceDirectorIterator extends de.matthiasmann.continuations.CoIt
 		return new WaitTimerAction ();
 	}
 
+	protected HeadingAction heading ()
+	{
+		return new HeadingAction (bullet);
+	}
 }

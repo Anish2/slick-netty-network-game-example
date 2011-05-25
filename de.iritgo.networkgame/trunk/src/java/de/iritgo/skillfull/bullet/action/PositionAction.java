@@ -11,6 +11,7 @@ public class PositionAction extends BulletAction
 
 	public PositionAction ()
 	{
+		actionDone = true;
 	}
 
 	@Override
@@ -18,7 +19,6 @@ public class PositionAction extends BulletAction
 	{
 		bullet.setLocation (x, y);
 		inactive ();
-		
 		return true;
 	}
 	

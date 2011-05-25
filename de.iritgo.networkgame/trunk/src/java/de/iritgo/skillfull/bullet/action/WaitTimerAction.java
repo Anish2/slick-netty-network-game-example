@@ -9,8 +9,6 @@ import de.iritgo.skillfull.bullet.BulletTimer;
 
 public class WaitTimerAction extends BulletAction
 {
-	
-	
 	private long stop;
 	private long start;
 
@@ -25,9 +23,9 @@ public class WaitTimerAction extends BulletAction
 		if (start > stop)
 		{
 			inactive ();
-			return true;
+			return actionDone = true;
 		}
-		return false;
+		return actionDone = false;
 	}
 	
 	public WaitTimerAction stop (long time)
