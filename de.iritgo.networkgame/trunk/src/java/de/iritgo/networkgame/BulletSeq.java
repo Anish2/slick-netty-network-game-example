@@ -5,6 +5,8 @@ package de.iritgo.networkgame;
 import java.sql.Driver;
 import java.util.Random;
 
+import com.artemis.utils.TrigLUT;
+
 import de.iritgo.skillfull.bullet.Bullet;
 import de.iritgo.skillfull.bullet.BulletAction;
 import de.iritgo.skillfull.bullet.BulletDirector;
@@ -33,6 +35,8 @@ public class BulletSeq extends SequenceDirectorIterator
 	@Override
 	protected void run () throws SuspendExecution
 	{
+		while (true)
+		{
 		startTime = director.getTimer ();
 		produce (waitTimer ().start (startTime).stop (startTime + 1500));
 
@@ -46,12 +50,12 @@ public class BulletSeq extends SequenceDirectorIterator
 
 		produce (waitTimer ().start (startTime).stop (startTime + r.nextInt (1500)));
 
-		while (q < 12)
+		while (q < 4)
 		{
 			++q;
-			float sin = (float) (Math.sin (++shotRad) * (float) 60 + (- 15 + r.nextInt (30)));
+			float sin = (float) (TrigLUT.sin (++shotRad) * (float) 60 + (- 15 + r.nextInt (30)));
 			startTime = director.getTimer ();
-			produce (drive (bullet).speed (bullet.getLastSpeed ()).rotate (180 + sin).time (250).block ());
+			produce (drive (bullet).speed (bullet.getLastSpeed ()).rotate (180 + sin).time (800).block ());
 		}
 		q = 0;
 		produce (drive (bullet).speed (300f).rotate (0).time (50).block ());
@@ -65,7 +69,7 @@ public class BulletSeq extends SequenceDirectorIterator
 		produce (drive (bullet).rotate (90).time (500).block ());
 
 		int wait = r.nextInt (500);
-
+		shotRad = 0;
 		if (r.nextBoolean () == true)
 		{
 			produce (drive (bullet).rotate (90).time (wait / 2).block ());
@@ -87,5 +91,6 @@ public class BulletSeq extends SequenceDirectorIterator
 		int rad = 260 - (++shotRad);
 		produce (drive (bullet).rotate (rad).time (50).block ());
 		produce (drive (bullet).acceleration (2.0f).rotate (rad).time (1500).block ());
+		}
 	}
 }

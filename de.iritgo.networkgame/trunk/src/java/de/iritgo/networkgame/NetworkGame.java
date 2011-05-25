@@ -84,19 +84,7 @@ public class NetworkGame extends BasicTWLGameState
 			}
 		};
 
-		bulletDirector.createBullets (250);
-
-
-
-
-
-
-
-
-
-
-
-
+		bulletDirector.createBullets (3000);
 
 		container.setAlwaysRender (true);
 		container.setShowFPS (true);
