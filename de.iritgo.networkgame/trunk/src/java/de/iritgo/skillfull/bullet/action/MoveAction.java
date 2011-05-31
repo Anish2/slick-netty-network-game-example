@@ -9,15 +9,12 @@ import de.iritgo.skillfull.bullet.BulletTimer;
 
 public class MoveAction extends BulletAction
 {
-	private int timer;
-	private BulletTimer bulletTimer;
 	private float x;
 	private float y;
 	private Bullet initBullet;
 
 	public MoveAction (Bullet bullet)
 	{
-		bulletTimer = new BulletTimer ();
 		initBullet = new Bullet (bullet);
 		actionDone = false;
 	}
@@ -25,17 +22,8 @@ public class MoveAction extends BulletAction
 	@Override
 	public boolean perform (int delta, BulletDirector bulletDirector, Bullet bullet)
 	{
-		if (! bulletTimer.isValid ())
-		{
-			bullet.setX (x);
-			bullet.setY (y);
-			inactive ();
-			return actionDone = true;
-		}
-		
-		bulletTimer.update (delta);
 
-		float posInTime = (float) bulletTimer.getTime () / (float) bulletTimer.getStopTime ();
+		float posInTime = (float) getTime () / (float) getStopTime ();
 		if (posInTime > 1)
 		{
 			posInTime = 1;
@@ -58,7 +46,7 @@ public class MoveAction extends BulletAction
 
 	public MoveAction time (int time)
 	{
-		bulletTimer.setStopTime (time);
+		stopTime (time);
 		return this;
 	}
 

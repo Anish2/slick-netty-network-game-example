@@ -14,7 +14,6 @@ public class BulletAction
 	private int startTime;
 
 	private BulletTimer bulletTimer;
-
 	
 	public boolean perform (int delta, BulletDirector bulletDirector, Bullet bullet)
 	{
@@ -23,7 +22,7 @@ public class BulletAction
 
 	public boolean isInTime ()
 	{
-		return active && bulletTimer.getTime () >= startTime && ((bulletTimer.getTime () - startTime) + bulletTimer.getOverlapTime () < stopTime);
+		return active && bulletTimer.getTime () >= startTime && ((bulletTimer.getTime () - startTime) < stopTime);
 	}
 	
 	protected void inactive ()
@@ -43,7 +42,7 @@ public class BulletAction
 	
 	public int getTime ()
 	{
-		return (bulletTimer.getTime () - startTime) + bulletTimer.getOverlapTime ();
+		return (bulletTimer.getTime () - startTime);
 	}
 	
 	public void startTime (int startTime)
@@ -68,19 +67,16 @@ public class BulletAction
 
 	public void updateTime (int delta)
 	{
-		startTime = bulletTimer.getTime () + startTime - delta;
+		startTime = bulletTimer.getTime () + startTime - (bulletTimer.getFirstDelta () + bulletTimer.getOverlapTime ());
 	}
 
 	public void performDone (int delta, BulletDirector bulletDirector, Bullet bullet)
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	public void updateOverlapTime ()
 	{
 		if (stopTime != 0)
-			bulletTimer.setOverlapTime ((bulletTimer.getTime () - startTime)  + bulletTimer.getOverlapTime () - stopTime);
-		System.out.println (bulletTimer.getOverlapTime ());
+			bulletTimer.setOverlapTime (bulletTimer.getTime () - (startTime + stopTime));
 	}
 }

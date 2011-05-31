@@ -58,14 +58,12 @@ public class BulletDirector
 							}
 						}
 
-						while (seqDirector.hasNext ())
+						if (seqDirector.hasNext ())
 						{
 							BulletAction action = seqDirector.next ();
 							action.setBulletTimer (bulletTimer);
-							action.updateTime (delta);
+							action.updateTime (0);
 							bulletActions.add (action);
-							if (! action.isActionDone ())
-								break;
 						}
 					}
 
@@ -78,8 +76,7 @@ public class BulletDirector
 						}
 						else
 						{
-							if (action.getStopTime () == 0)
-								action.perform (delta, this, bullet);
+							action.performDone (delta, this, bullet);
 							action.updateOverlapTime ();
 							bulletActions.remove (j--);
 							if (bulletActions.size () == 0)

@@ -17,9 +17,14 @@ public class PositionAction extends BulletAction
 	@Override
 	public boolean perform (int delta, BulletDirector bulletDirector, Bullet bullet)
 	{
-		bullet.setLocation (x, y);
 		inactive ();
 		return true;
+	}
+
+	@Override
+	public void performDone (int delta, BulletDirector bulletDirector, Bullet bullet)
+	{
+		bullet.setLocation (x, y);
 	}
 	
 	public PositionAction xy (int x, int y)
