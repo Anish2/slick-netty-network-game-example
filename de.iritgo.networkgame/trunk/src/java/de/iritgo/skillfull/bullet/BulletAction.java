@@ -23,7 +23,7 @@ public class BulletAction
 
 	public boolean isInTime ()
 	{
-		return active && bulletTimer.getTime () >= startTime && ((bulletTimer.getTime () - startTime) + bulletTimer.getOverlapTime () <= stopTime);
+		return active && bulletTimer.getTime () >= startTime && ((bulletTimer.getTime () - startTime) + bulletTimer.getOverlapTime () < stopTime);
 	}
 	
 	protected void inactive ()
@@ -66,9 +66,9 @@ public class BulletAction
 		this.bulletTimer = bulletTimer;
 	}
 
-	public void updateTime ()
+	public void updateTime (int delta)
 	{
-		startTime = bulletTimer.getTime () + startTime;
+		startTime = bulletTimer.getTime () + startTime - delta;
 	}
 
 	public void performDone (int delta, BulletDirector bulletDirector, Bullet bullet)

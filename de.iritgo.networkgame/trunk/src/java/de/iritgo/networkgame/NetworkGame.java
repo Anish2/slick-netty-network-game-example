@@ -85,7 +85,22 @@ public class NetworkGame extends BasicTWLGameState
 		};
 
 		bulletDirector.createBullets (1);
-
+		
+//		for (int i = 0; i < 2000 ; i += 17)
+//		{
+//			blaTimer += 17;
+//			if (blaTimer >= 200)
+//			{
+//				superBlub += (( 50f/ 1000f) * (float)blaTimer) ;
+//				blaTimer = blaTimer - 200;
+//			}
+//			blub = (( 50f/ 1000f) * (float)blaTimer) ;
+//			xpos = blub + superBlub;
+//			System.out.println ("Correct: " + xpos + ":::" + blaTimer);
+//			bulletDirector.update (17);
+//		}
+//		System.exit (0);
+		
 		container.setAlwaysRender (true);
 		container.setShowFPS (true);
 		container.setVSync (true);
@@ -119,7 +134,6 @@ public class NetworkGame extends BasicTWLGameState
 	public void update (GameContainer container, StateBasedGame arg1, int delta) throws SlickException
 	{
 		world.update (delta);
-		bulletDirector.update (delta);
 
 		blaTimer += delta;
 		if (blaTimer >= 200)
@@ -129,7 +143,8 @@ public class NetworkGame extends BasicTWLGameState
 		}
 		blub = (( 50f/ 1000f) * (float)blaTimer) ;
 		xpos = blub + superBlub;
-		System.out.println ("N: " + blub + ":::" + blaTimer);
+		System.out.println ("N: " + xpos + ":::" + blaTimer);
+		bulletDirector.update (delta);
 
 		if (container.getInput ().isKeyPressed (Input.KEY_TAB))
 		{
