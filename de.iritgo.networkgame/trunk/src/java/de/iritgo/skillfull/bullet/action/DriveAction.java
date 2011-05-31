@@ -26,6 +26,8 @@ public class DriveAction extends BulletAction
 
 	private float speed;
 
+	private float lastMovedWay;
+
 	public DriveAction (Bullet bullet)
 	{
 		initBullet = new Bullet (bullet);
@@ -49,15 +51,18 @@ public class DriveAction extends BulletAction
 
 		movedWay = (0.5f * (acceleration / 1000) * ((time) * (time))) + ((speed / 1000) * (time));
 		
-//		if (speed == 0 && acceleration == 0)
-//			return actionDone;
+		if (speed == 0 && acceleration == 0)
+			return actionDone;
 		
-		float nextPosX = Utils.getXAtEndOfRotatedLineByOrigin (0, movedWay, bullet.getRotation ());
-		float nextPosY = Utils.getYAtEndOfRotatedLineByOrigin (0, movedWay, bullet.getRotation ());
-
-		bullet.setX (initBullet.getX () + nextPosX);
-		bullet.setY (initBullet.getY () + nextPosY);
-		System.out.println ("Mist: " + bullet.getX () + ">" + time);
+		float nextPosX = Utils.getXAtEndOfRotatedLineByOrigin (0, movedWay - lastMovedWay, bullet.getRotation ());
+		float nextPosY = Utils.getYAtEndOfRotatedLineByOrigin (0, movedWay - lastMovedWay, bullet.getRotation ());
+		x += nextPosX;
+		y += nextPosY;
+		lastMovedWay = movedWay;
+		
+		bullet.setX (initBullet.getX () + x);
+		bullet.setY (initBullet.getY () + y);
+//		System.out.println ("Mist: " + bullet.getX () + ">" + time + " weg: " + movedWay);
 		return actionDone;
 	}
 

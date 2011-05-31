@@ -2,6 +2,8 @@
 package de.iritgo.networkgame;
 
 
+import java.util.Random;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -84,11 +86,12 @@ public class NetworkGame extends BasicTWLGameState
 			}
 		};
 
-		bulletDirector.createBullets (1);
+		bulletDirector.createBullets (1001);
 		
-//		for (int i = 0; i < 2000 ; i += 17)
+//		for (int i = 0; i < 2000 ; i += 11)
 //		{
-//			blaTimer += 17;
+//			int fuck = 10 + new Random ().nextInt (10);
+//			blaTimer += fuck;
 //			if (blaTimer >= 200)
 //			{
 //				superBlub += (( 50f/ 1000f) * (float)blaTimer) ;
@@ -96,8 +99,8 @@ public class NetworkGame extends BasicTWLGameState
 //			}
 //			blub = (( 50f/ 1000f) * (float)blaTimer) ;
 //			xpos = blub + superBlub;
-//			System.out.println ("Correct: " + xpos + ":::" + blaTimer);
-//			bulletDirector.update (17);
+//			System.out.println ("Correct: " + (60 + xpos) + ":::" + blaTimer + " weg; " + blub);
+//			bulletDirector.update (fuck);
 //		}
 //		System.exit (0);
 		
@@ -143,7 +146,9 @@ public class NetworkGame extends BasicTWLGameState
 		}
 		blub = (( 50f/ 1000f) * (float)blaTimer) ;
 		xpos = blub + superBlub;
-		System.out.println ("N: " + xpos + ":::" + blaTimer);
+
+//		System.out.println ("Correct: " + xpos + ":::" + blaTimer);
+
 		bulletDirector.update (delta);
 
 		if (container.getInput ().isKeyPressed (Input.KEY_TAB))

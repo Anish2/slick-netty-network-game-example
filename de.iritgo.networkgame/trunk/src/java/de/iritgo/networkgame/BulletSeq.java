@@ -38,45 +38,41 @@ public class BulletSeq extends SequenceDirectorIterator
 		while (true)
 		{
 //			produce (waitTimer ().start (startTime).stop (startTime + 1500));
+//			produce (position ().xy (60, 240));
+//			produce (drive ().rotate (0).dontWait ());
+//			int x = 0;
+//			while (x++ < 50)
+//				produce (drive ().speed (50.0f).rotate (0).time (200));
 
 			produce (position ().xy (100 + r.nextInt (50), 250 + r.nextInt (80)));
-//			produce (drive ().rotate (0));
-//			produce (drive ().acceleration (1.5f).rotate (0).time (200));
-//			produce (drive ().withLastSpeed ().rotate (0).time (1500));
-//			produce (drive ().withLastSpeed ().acceleration (- 1.5f).rotate (0).time (200));
-//			produce (drive ().speed (300f).rotate (180).time (50));
-//			int q = 0;
-//
-//			produce (waitTimer ().start (startTime).stop (startTime + r.nextInt (1500)));
-//
-//			while (q < 4)
-//			{
-//				++q;
-//				float sin = (float) (TrigLUT.sin (++shotRad) * (float) 60 + (- 15 + r.nextInt (30)));
-//				startTime = director.getTimer ();
-//				produce (drive ().withLastSpeed ().rotate (180 + sin).time (800));
-//			}
-//			q = 0;
-//			produce (drive ().speed (300f).rotate (0).time (50));
-//			while (q < 5)
-//			{
-//				++q;
-//				produce (drive ().withLastSpeed ().rotate (r.nextInt (360)).time (1000));
-//			}
-//
-//			produce (move ().to (100 + r.nextInt (50), 250 + r.nextInt (20)).time (2000));
-//			produce (drive ().rotate (90).time (500));
+			produce (drive ().rotate (0));
+			produce (drive ().acceleration (1.5f).rotate (0).time (200));
+			produce (drive ().withLastSpeed ().rotate (0).time (1500));
+			produce (drive ().withLastSpeed ().acceleration (- 1.5f).rotate (0).time (200));
+			produce (drive ().speed (300f).rotate (180).time (50));
+			int q = 0;
+
+			produce (waitTimer ().start (startTime).stop (startTime + r.nextInt (1500)));
+
+			while (q < 4)
+			{
+				++q;
+				float sin = (float) (TrigLUT.sin (++shotRad) * (float) 60 + (- 15 + r.nextInt (30)));
+				produce (drive ().withLastSpeed ().rotate (180 + sin).time (800));
+			}
+			q = 0;
+			produce (drive ().speed (300f).rotate (0).time (50));
+			while (q < 5)
+			{
+				++q;
+				produce (drive ().withLastSpeed ().rotate (r.nextInt (360)).time (1000));
+			}
+
+			produce (move ().to (100 + r.nextInt (50), 250 + r.nextInt (20)).time (2000));
 
 			int wait = r.nextInt (500);
 			shotRad = 0;
 
-			produce (drive ().rotate (0).dontWait ());
-			int x = 0;
-			while (x++ < 50)
-				produce (drive ().speed (50.0f).rotate (0).time (200));
-
-			
-			
 			produce (heading ().rotate (0).active ().dontWait ());
 			if (r.nextBoolean () == true)
 			{
