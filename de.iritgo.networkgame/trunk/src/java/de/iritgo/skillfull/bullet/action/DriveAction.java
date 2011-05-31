@@ -12,8 +12,6 @@ import de.iritgo.skillfull.bullet.BulletTimer;
 
 public class DriveAction extends BulletAction
 {
-	private int timer;
-
 	private float x;
 
 	private float y;
@@ -27,16 +25,6 @@ public class DriveAction extends BulletAction
 	private float movedWay;
 
 	private float speed;
-
-	private int lastCallTime;
-
-	private float lastMovedWay;
-
-	private float lastNextPosX;
-
-	private float lastNextPosY;
-
-	private float lastMoved;
 
 	public DriveAction (Bullet bullet)
 	{
@@ -60,23 +48,23 @@ public class DriveAction extends BulletAction
 			bullet.setRotation (Utils.lerpDegrees (initBullet.getRotation (), rotation, posInTime));
 
 		movedWay = (0.5f * (acceleration / 1000) * ((time) * (time))) + ((speed / 1000) * (time));
-		System.out.println ("D: " + movedWay + ">" + time);
+		
+//		if (speed == 0 && acceleration == 0)
+//			return actionDone;
+		
+		float nextPosX = Utils.getXAtEndOfRotatedLineByOrigin (0, movedWay, bullet.getRotation ());
+		float nextPosY = Utils.getYAtEndOfRotatedLineByOrigin (0, movedWay, bullet.getRotation ());
 
-		float nextPosX = Utils.getXAtEndOfRotatedLineByOrigin (0, movedWay - lastMoved, bullet.getRotation ());
-		float nextPosY = Utils.getYAtEndOfRotatedLineByOrigin (0, movedWay - lastMoved, bullet.getRotation ());
-
-		if (movedWay - lastMoved == 0)
-			System.out.println (movedWay - lastMoved);
-		lastMoved = movedWay;
-
-		bullet.setX (initBullet.getX () + movedWay);
+		bullet.setX (initBullet.getX () + nextPosX);
 		bullet.setY (initBullet.getY () + nextPosY);
+		System.out.println ("Mist: " + bullet.getX () + ">" + time);
 		return actionDone;
 	}
 
 	@Override
 	public void performDone (int delta, BulletDirector bulletDirector, Bullet bullet)
 	{
+		perform (delta, bulletDirector, bullet);
 		int time = getTime ();
 
 		inactive ();

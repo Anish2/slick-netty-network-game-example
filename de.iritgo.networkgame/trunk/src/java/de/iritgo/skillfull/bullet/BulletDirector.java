@@ -62,7 +62,7 @@ public class BulletDirector
 						{
 							BulletAction action = seqDirector.next ();
 							action.setBulletTimer (bulletTimer);
-							action.updateTime ();
+							action.updateTime (delta);
 							bulletActions.add (action);
 							if (! action.isActionDone ())
 								break;
@@ -78,7 +78,8 @@ public class BulletDirector
 						}
 						else
 						{
-							action.performDone (delta, this, bullet);
+							if (action.getStopTime () == 0)
+								action.perform (delta, this, bullet);
 							action.updateOverlapTime ();
 							bulletActions.remove (j--);
 							if (bulletActions.size () == 0)
