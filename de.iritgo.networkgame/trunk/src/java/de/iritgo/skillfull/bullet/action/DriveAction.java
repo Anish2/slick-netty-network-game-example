@@ -28,9 +28,18 @@ public class DriveAction extends BulletAction
 
 	private float lastMovedWay;
 
+	private float startX;
+
+	private float startY;
+
+	private float startRot;
+
 	public DriveAction (Bullet bullet)
 	{
 		initBullet = new Bullet (bullet);
+		startX = initBullet.getX ();
+		startY = initBullet.getY ();
+		startRot = initBullet.getRotation ();
 		rotation = - 1;
 		acceleration = 0.0f;
 		actionDone = false;
@@ -46,22 +55,22 @@ public class DriveAction extends BulletAction
 		{
 			posInTime = 1;
 		}
+
 		if (rotation != - 1)
-			bullet.setRotation (Utils.lerpDegrees (initBullet.getRotation (), rotation, posInTime));
+			bullet.setRotation (Utils.lerpDegrees (startRot, rotation, posInTime));
 
 		movedWay = (0.5f * (acceleration / 1000) * ((time) * (time))) + ((speed / 1000) * (time));
-		
+
 		if (speed == 0 && acceleration == 0)
 			return actionDone;
-		
-		float nextPosX = Utils.getXAtEndOfRotatedLineByOrigin (0, movedWay - lastMovedWay, bullet.getRotation ());
-		float nextPosY = Utils.getYAtEndOfRotatedLineByOrigin (0, movedWay - lastMovedWay, bullet.getRotation ());
-		x += nextPosX;
-		y += nextPosY;
+
+		float rotation = bullet.getRotation ();
+		x += Utils.getXAtEndOfRotatedLineByOrigin (0, movedWay - lastMovedWay, rotation);
+		y += Utils.getYAtEndOfRotatedLineByOrigin (0, movedWay - lastMovedWay, rotation);
 		lastMovedWay = movedWay;
-		
-		bullet.setX (initBullet.getX () + x);
-		bullet.setY (initBullet.getY () + y);
+
+		bullet.setX (startX + x);
+		bullet.setY (startY + y);
 //		System.out.println ("Mist: " + bullet.getX () + ">" + time + " weg: " + movedWay);
 		return actionDone;
 	}
@@ -70,6 +79,9 @@ public class DriveAction extends BulletAction
 	public void performDone (int delta, BulletDirector bulletDirector, Bullet bullet)
 	{
 		perform (delta, bulletDirector, bullet);
+		startX = bullet.getX ();
+		startY = bullet.getY ();
+		startRot = bullet.getRotation ();
 		int time = getTime ();
 
 		inactive ();

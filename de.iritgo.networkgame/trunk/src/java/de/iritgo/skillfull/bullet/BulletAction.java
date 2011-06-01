@@ -6,7 +6,7 @@ public class BulletAction
 	private boolean active = true;
 
 	protected boolean actionDone;
-	
+
 	private int stopTime;
 
 	private int time;
@@ -14,7 +14,7 @@ public class BulletAction
 	private int startTime;
 
 	private BulletTimer bulletTimer;
-	
+
 	public boolean perform (int delta, BulletDirector bulletDirector, Bullet bullet)
 	{
 		return true;
@@ -24,7 +24,7 @@ public class BulletAction
 	{
 		return active && bulletTimer.getTime () >= startTime && ((bulletTimer.getTime () - startTime) < stopTime);
 	}
-	
+
 	protected void inactive ()
 	{
 		active = false;
@@ -34,17 +34,17 @@ public class BulletAction
 	{
 		return actionDone;
 	}
-	
+
 	public void setTime (int time)
 	{
 		this.time = time;
 	}
-	
+
 	public int getTime ()
 	{
 		return (bulletTimer.getTime () - startTime);
 	}
-	
+
 	public void startTime (int startTime)
 	{
 		this.startTime = startTime;
@@ -54,7 +54,7 @@ public class BulletAction
 	{
 		this.stopTime = stopTime;
 	}
-	
+
 	public int getStopTime ()
 	{
 		return stopTime;
@@ -78,5 +78,13 @@ public class BulletAction
 	{
 		if (stopTime != 0)
 			bulletTimer.setOverlapTime (bulletTimer.getTime () - (startTime + stopTime));
+	}
+
+	public void activate ()
+	{
+		active = true;
+		actionDone = false;
+		stopTime = 0;
+		startTime = 0;
 	}
 }
