@@ -13,12 +13,13 @@ public class SequenceDirectorIterator extends de.matthiasmann.continuations.CoIt
 {
 	private static final long serialVersionUID = 1L;
 	private Bullet bullet;
-	
+	private BulletAction lastAction;
+
 	public SequenceDirectorIterator (Bullet bullet)
 	{
 		this.bullet = bullet;
 	}
-	
+
 	@Override
 	protected void run () throws SuspendExecution
 	{
@@ -28,7 +29,7 @@ public class SequenceDirectorIterator extends de.matthiasmann.continuations.CoIt
 	{
 		return new BulletAction ();
 	}
-	
+
 	protected BulletAction test (String text)
 	{
 		return new TestAction (text);
@@ -48,7 +49,7 @@ public class SequenceDirectorIterator extends de.matthiasmann.continuations.CoIt
 	{
 		return new PositionAction ();
 	}
-	
+
 	protected WaitTimerAction waitTimer ()
 	{
 		return new WaitTimerAction ();

@@ -62,6 +62,8 @@ public class NetworkGame extends BasicTWLGameState
 
 	private float superBlub;
 
+	private int delta;
+
 	public static Sprite rocket = new Sprite ("data/rocket.png");
 
 
@@ -86,8 +88,8 @@ public class NetworkGame extends BasicTWLGameState
 			}
 		};
 
-		bulletDirector.createBullets (1001);
-		
+		bulletDirector.createBullets (200);
+
 //		for (int i = 0; i < 2000 ; i += 11)
 //		{
 //			int fuck = 10 + new Random ().nextInt (10);
@@ -103,7 +105,7 @@ public class NetworkGame extends BasicTWLGameState
 //			bulletDirector.update (fuck);
 //		}
 //		System.exit (0);
-		
+
 		container.setAlwaysRender (true);
 		container.setShowFPS (true);
 		container.setVSync (true);
@@ -136,6 +138,7 @@ public class NetworkGame extends BasicTWLGameState
 	 */
 	public void update (GameContainer container, StateBasedGame arg1, int delta) throws SlickException
 	{
+		this.delta = delta;
 		world.update (delta);
 
 		blaTimer += delta;
@@ -184,7 +187,7 @@ public class NetworkGame extends BasicTWLGameState
 				rocket.getImage ().setRotation (bullet.getHeading () + 90);
 			else
 				rocket.getImage ().setRotation (bullet.getRotation () + 90);
-				
+
 			g.drawImage (rocket.getImage (), (int)bullet.getX (), (int)bullet.getY ());
 		}
 		g.drawImage (rocket.getImage (), (int)60 + xpos, (int)250);
@@ -192,6 +195,7 @@ public class NetworkGame extends BasicTWLGameState
 
 		g.drawString ("GameTime: " + world.getNetworkTime (), 100, 10);
 		g.drawString ("TimeShift: " + client.getGameTimeManager ().getNetworkTimeShift (), 280, 10);
+		g.drawString ("Delta: " + delta, 450, 10);
 	}
 
 	public int getID ()

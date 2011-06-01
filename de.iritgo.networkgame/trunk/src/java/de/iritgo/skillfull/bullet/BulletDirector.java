@@ -44,49 +44,47 @@ public class BulletDirector
 				boolean doMoreAction = true;
 				while (doMoreAction)
 				{
-					doMoreAction = false;
-					if (bulletActions.size () == 0)
-					{
-						SequenceDirectorIterator seqDirector = directors.get (i);
-						if (! seqDirector.hasNext ())
-						{
-							++bulletDone;
-							if (bulletDone == bullets.size ())
-							{
-								System.out.println ("Done!");
-								break;
-							}
-						}
-
-						if (seqDirector.hasNext ())
-						{
-							BulletAction action = seqDirector.next ();
-							action.setBulletTimer (bulletTimer);
-							action.updateTime (0);
-							bulletActions.add (action);
-						}
-					}
-
-					for (int j = 0; j < bulletActions.size (); ++j)
-					{
-						BulletAction action = bulletActions.get (j);
-						if (action.isInTime ())
-						{
-							action.perform (delta, this, bullet);
-						}
-						else
-						{
-							action.performDone (delta, this, bullet);
-							action.updateOverlapTime ();
-							bulletActions.remove (j--);
-							if (bulletActions.size () == 0)
-							{
-								doMoreAction = true;
-								break;
-							}
-						}
-					}
+					addActions (i, bulletActions);
+					doMoreAction = performActions (delta, bullet, bulletActions);
 				}
+			}
+		}
+	}
+
+	private boolean performActions (int delta, Bullet bullet, Bag<BulletAction> bulletActions)
+	{
+		for (int j = 0; j < bulletActions.size (); ++j)
+		{
+			BulletAction action = bulletActions.get (j);
+			if (action.isInTime ())
+			{
+				action.perform (delta, this, bullet);
+			}
+			else
+			{
+				action.performDone (delta, this, bullet);
+				action.updateOverlapTime ();
+				bulletActions.remove (j--);
+				if (bulletActions.size () == 0)
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private void addActions (int i, Bag<BulletAction> bulletActions)
+	{
+		if (bulletActions.size () == 0)
+		{
+			SequenceDirectorIterator seqDirector = directors.get (i);
+			if (seqDirector.hasNext ())
+			{
+				BulletAction action = seqDirector.next ();
+				action.setBulletTimer (bulletTimer);
+				action.updateTime (0);
+				bulletActions.add (action);
 			}
 		}
 	}

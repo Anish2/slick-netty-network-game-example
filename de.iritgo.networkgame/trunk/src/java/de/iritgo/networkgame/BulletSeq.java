@@ -38,11 +38,11 @@ public class BulletSeq extends SequenceDirectorIterator
 		while (true)
 		{
 //			produce (waitTimer ().start (startTime).stop (startTime + 1500));
-//			produce (position ().xy (60, 240));
-//			produce (drive ().rotate (0).dontWait ());
-//			int x = 0;
-//			while (x++ < 50)
-//				produce (drive ().speed (50.0f).rotate (0).time (200));
+			produce (position ().xy (60, 250 + r.nextInt (80)));
+			produce (drive ().rotate (0).dontWait ());
+			int x = 0;
+			while (x++ < 50)
+				produce (drive ().speed (50.0f).rotate (0).time (200));
 
 			produce (position ().xy (100 + r.nextInt (50), 250 + r.nextInt (80)));
 			produce (drive ().rotate (0));
