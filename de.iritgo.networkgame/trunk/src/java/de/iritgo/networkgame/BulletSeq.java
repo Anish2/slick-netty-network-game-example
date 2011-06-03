@@ -9,8 +9,12 @@ import com.artemis.utils.TrigLUT;
 
 import de.iritgo.skillfull.bullet.Bullet;
 import de.iritgo.skillfull.bullet.BulletAction;
+import de.iritgo.skillfull.bullet.BulletActionFactory;
 import de.iritgo.skillfull.bullet.BulletDirector;
 import de.iritgo.skillfull.bullet.SequenceDirectorIterator;
+import de.iritgo.skillfull.bullet.pattern.BulletPatternContext;
+import de.iritgo.skillfull.bullet.pattern.DoNothingPattern;
+import de.iritgo.skillfull.bullet.pattern.RandomPattern;
 import de.matthiasmann.continuations.SuspendExecution;
 
 
@@ -26,10 +30,8 @@ public class BulletSeq extends SequenceDirectorIterator
 
 	private static int shotRad = 0;
 
-	public BulletSeq (Bullet bullet, BulletDirector director)
+	public BulletSeq ()
 	{
-		super (bullet);
-		this.director = director;
 	}
 
 	@Override
@@ -38,13 +40,18 @@ public class BulletSeq extends SequenceDirectorIterator
 		while (true)
 		{
 //			produce (waitTimer ().start (startTime).stop (startTime + 1500));
-			produce (position ().xy (60, 250 + r.nextInt (80)));
+			pattern.setPattern (new RandomPattern (50));
+			produce (position ().xy (60, 250));
+//			pattern.setPattern (new DoNothingPattern ());
+
 			produce (drive ().rotate (0).dontWait ());
 			int x = 0;
 			while (x++ < 50)
 				produce (drive ().speed (50.0f).rotate (0).time (200));
-
+/*
+			patternContext.setPattern (new RandomPattern (50));
 			produce (position ().xy (100 + r.nextInt (50), 250 + r.nextInt (80)));
+			patternContext.setPattern (new DoNothingPattern ());
 			produce (drive ().rotate (0));
 			produce (drive ().acceleration (1.5f).rotate (0).time (200));
 			produce (drive ().withLastSpeed ().rotate (0).time (1500));
@@ -92,6 +99,7 @@ public class BulletSeq extends SequenceDirectorIterator
 			int rad = 260 - (++shotRad);
 			produce (drive ().rotate (rad).time (50));
 			produce (drive ().acceleration (2.0f).rotate (rad).time (1500));
+*/
 		}
 	}
 }

@@ -82,13 +82,13 @@ public class NetworkGame extends BasicTWLGameState
 
 		bulletDirector = new BulletDirector ()
 		{
-			public SequenceDirectorIterator createIterator (Bullet bullet)
+			public SequenceDirectorIterator createIterator ()
 			{
-				return new BulletSeq (bullet, bulletDirector);
+				return new BulletSeq ();
 			}
 		};
 
-		bulletDirector.createBullets (200);
+		bulletDirector.createBullets (5000);
 
 //		for (int i = 0; i < 2000 ; i += 11)
 //		{
@@ -110,7 +110,7 @@ public class NetworkGame extends BasicTWLGameState
 		container.setShowFPS (true);
 		container.setVSync (true);
 		// Zeitscheibe auf 20ms
-//		container.setMinimumLogicUpdateInterval (15);
+//		container.setMinimumLogicUpdateInterval (60);
 		container.setSmoothDeltas (false);
 		map = new TiledMap ("maps/BeerMap.tmx");
 

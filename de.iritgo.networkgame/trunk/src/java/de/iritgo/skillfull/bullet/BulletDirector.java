@@ -13,80 +13,81 @@ public class BulletDirector
 
 	private Bag<Bullet> bullets;
 
-	private Bag<SequenceDirectorIterator> directors;
-
 	private Bag<Bag<BulletAction>> bulletActionBags;
 
 	private BulletTimer bulletTimer;
 
 	private int bulletDone;
 
+	private Bag<BulletAction> actions = null;
+
+
+	SequenceDirectorIterator seqDirector;
+
 	public BulletDirector ()
 	{
 		bulletTimer = new BulletTimer ();
+		actions = new Bag<BulletAction> (10);
 	}
 
 	public void update (int delta)
 	{
 		bulletTimer.update (delta);
 
+		if (actions.size () == 0)
+		{
+			actions = nextActions (actions);
+		}
 		for (int i = 0; i < bullets.size (); ++i)
 		{
 			Bullet bullet = bullets.get (i);
 			if (bullet != null)
 			{
-				Bag<BulletAction> bulletActions = bulletActionBags.get (i);
-				if (bulletActions == null)
-				{
-					bulletActionBags.set (i, new Bag<BulletAction> (10));
-				}
-
-				boolean doMoreAction = true;
-				while (doMoreAction)
-				{
-					addActions (i, bulletActions);
-					doMoreAction = performActions (delta, bullet, bulletActions);
-				}
+				performActions (delta, bullet, actions);
+			}
+		}
+		for (int i = 0 ; i < actions.size () ; ++i)
+		{
+			BulletAction action = actions.get (i);
+			if (! action.isInTime ())
+			{
+				actions.remove (i--);
 			}
 		}
 	}
 
-	private boolean performActions (int delta, Bullet bullet, Bag<BulletAction> bulletActions)
+	private boolean performActions (int delta, Bullet bullet, Bag<BulletAction> actions)
 	{
-		for (int j = 0; j < bulletActions.size (); ++j)
+		for (int i = 0 ; i < actions.size () ; ++i)
 		{
-			BulletAction action = bulletActions.get (j);
+			BulletAction action = actions.get (i);
+			action.init (bullet);
 			if (action.isInTime ())
-			{
-				action.perform (delta, this, bullet);
-			}
+				action.perform (this, bullet);
 			else
 			{
-				action.performDone (delta, this, bullet);
 				action.updateOverlapTime ();
-				bulletActions.remove (j--);
-				if (bulletActions.size () == 0)
-				{
-					return true;
-				}
+				action.performDone (this, bullet);
+				action.setInit (false);
 			}
 		}
 		return false;
 	}
 
-	private void addActions (int i, Bag<BulletAction> bulletActions)
+	private Bag<BulletAction> nextActions (Bag<BulletAction> actions)
 	{
-		if (bulletActions.size () == 0)
+		actions.clear ();
+		while (seqDirector.hasNext ())
 		{
-			SequenceDirectorIterator seqDirector = directors.get (i);
-			if (seqDirector.hasNext ())
-			{
-				BulletAction action = seqDirector.next ();
-				action.setBulletTimer (bulletTimer);
-				action.updateTime (0);
-				bulletActions.add (action);
-			}
+			BulletAction action = seqDirector.next ();
+			action.setBulletTimer (bulletTimer);
+			action.updateTime (0);
+			actions.add (action);
+			if (action.getStopTime () == 0)
+				continue;
+			return actions;
 		}
+		return null;
 	}
 
 	public void reset ()
@@ -95,20 +96,23 @@ public class BulletDirector
 
 	public void createBullets (int numOfBullets)
 	{
+		seqDirector = createIterator ();
+		BulletFactory bulletFactory = new BulletFactory (numOfBullets);
+		BulletActionFactory bulletActionFactory = new BulletActionFactory (numOfBullets);
+		seqDirector.setBulletFactory (bulletActionFactory);
+
 		bullets = new Bag<Bullet> (numOfBullets);
-		directors = new Bag<SequenceDirectorIterator> (numOfBullets);
 		bulletActionBags = new Bag<Bag<BulletAction>> (numOfBullets);
 
 		for (int i = 0; i < numOfBullets; ++i)
 		{
-			Bullet bullet = new Bullet ();
+			Bullet bullet = bulletFactory.createBullet ();
 			bullets.add (bullet);
 			bulletActionBags.add (new Bag<BulletAction> (10));
-			directors.add (createIterator (bullet));
 		}
 	}
 
-	public SequenceDirectorIterator createIterator (Bullet bullet)
+	public SequenceDirectorIterator createIterator ()
 	{
 		return null;
 	}

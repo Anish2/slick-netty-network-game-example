@@ -14,11 +14,16 @@ public class TestAction extends BulletAction
 	}
 
 	@Override
+	protected void actionInit ()
+	{
+	}
+
+	@Override
 	public boolean perform (int delta, BulletDirector bulletDirector, Bullet bullet)
 	{
 		System.out.println (text);
 		inactive ();
-		
+
 		return true;
 	}
 }
