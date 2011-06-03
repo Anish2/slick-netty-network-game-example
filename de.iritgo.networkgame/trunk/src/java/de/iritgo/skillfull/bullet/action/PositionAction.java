@@ -3,16 +3,19 @@ package de.iritgo.skillfull.bullet.action;
 import de.iritgo.skillfull.bullet.Bullet;
 import de.iritgo.skillfull.bullet.BulletAction;
 import de.iritgo.skillfull.bullet.BulletDirector;
+import de.iritgo.skillfull.bullet.pattern.BulletPattern;
 
 public class PositionAction extends BulletAction
 {
 	private int x;
 	private int y;
 
-	public PositionAction ()
+	@Override
+	protected void actionInit ()
 	{
-		actionDone = true;
+		setActionDone (true);
 	}
+
 
 	@Override
 	public boolean perform (int delta, BulletDirector bulletDirector, Bullet bullet)
@@ -24,9 +27,10 @@ public class PositionAction extends BulletAction
 	@Override
 	public void performDone (int delta, BulletDirector bulletDirector, Bullet bullet)
 	{
-		bullet.setLocation (x, y);
+		bullet.setX (x + pattern.getOffsetX ());
+		bullet.setY (y + pattern.getOffsetY ());
 	}
-	
+
 	public PositionAction xy (int x, int y)
 	{
 		this.x = x;

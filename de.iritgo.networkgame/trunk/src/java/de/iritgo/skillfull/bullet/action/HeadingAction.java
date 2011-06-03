@@ -1,4 +1,6 @@
+
 package de.iritgo.skillfull.bullet.action;
+
 
 import com.artemis.utils.Utils;
 
@@ -6,93 +8,80 @@ import de.iritgo.skillfull.bullet.Bullet;
 import de.iritgo.skillfull.bullet.BulletAction;
 import de.iritgo.skillfull.bullet.BulletDirector;
 import de.iritgo.skillfull.bullet.BulletTimer;
+import de.iritgo.skillfull.bullet.pattern.BulletPatternContext;
+
 
 public class HeadingAction extends BulletAction
 {
-	private int timer;
-	private BulletTimer bulletTimer;
-	private float x;
-	private float y;
-	private Bullet initBullet;
 	private float rotation;
-	private float fromRotation;
-	private Bullet bullet;
 
-	public HeadingAction (Bullet bullet)
+	private float fromRotation;
+
+	public HeadingAction ()
 	{
-		bulletTimer = new BulletTimer ();
-		initBullet = new Bullet (bullet);
-		this.bullet = bullet;
-		actionDone = false;
+		// this.bullet = bullet;
+		// actionDone = false;
+	}
+
+	@Override
+	protected void actionInit ()
+	{
 	}
 
 	@Override
 	public boolean perform (int delta, BulletDirector bulletDirector, Bullet bullet)
 	{
-		if (! bulletTimer.isValid ())
-		{
-			inactive ();
-			return actionDone = true;
-		}
-		
-		bulletTimer.update (delta);
+		// float posInTime = (float) bulletTimer.getTime () / (float)
+		// bulletTimer.getStopTime ();
+		// if (posInTime > 1)
+		// {
+		// posInTime = 1;
+		// }
 
-		float posInTime = (float) bulletTimer.getTime () / (float) bulletTimer.getStopTime ();
-		if (posInTime > 1)
-		{
-			posInTime = 1;
-		}
-		
-		bullet.setHeading (Utils.lerpDegrees (fromRotation, rotation, posInTime));
-		return actionDone;
+		// bullet.setHeading (Utils.lerpDegrees (fromRotation, rotation,
+		// posInTime));
+		return false;
 	}
 
-	public HeadingAction to (float x, float y)
-	{
-		this.x = x;
-		this.y = y;
-		return this;
-	}
-	
 	public HeadingAction rotate (float rotation)
 	{
 		this.rotation = rotation;
 		return this;
 	}
-	
+
 	public HeadingAction fromRotation ()
 	{
-		this.fromRotation = initBullet.getRotation ();
+		// this.fromRotation = startRotation;
 		return this;
 	}
 
 	public HeadingAction fromHeading ()
 	{
-		this.fromRotation = initBullet.getHeading ();
+		// this.fromRotation = startHeading;
 		return this;
 	}
 
 	public HeadingAction time (int time)
 	{
-		bulletTimer.setStopTime (time);
+		// bulletTimer.setStopTime (time);
 		return this;
 	}
 
 	public HeadingAction dontWait ()
 	{
-		actionDone = true;
+		// actionDone = true;
 		return this;
 	}
-	
+
 	public HeadingAction active ()
 	{
-		bullet.setHeadingActive (true);
+		// bullet.setHeadingActive (true);
 		return this;
 	}
 
 	public HeadingAction unactive ()
 	{
-		bullet.setHeadingActive (false);
+		// bullet.setHeadingActive (false);
 		return this;
 	}
 }

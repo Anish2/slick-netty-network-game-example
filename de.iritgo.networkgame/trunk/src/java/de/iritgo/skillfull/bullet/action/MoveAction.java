@@ -1,4 +1,6 @@
+
 package de.iritgo.skillfull.bullet.action;
+
 
 import com.artemis.utils.Utils;
 
@@ -6,41 +8,46 @@ import de.iritgo.skillfull.bullet.Bullet;
 import de.iritgo.skillfull.bullet.BulletAction;
 import de.iritgo.skillfull.bullet.BulletDirector;
 import de.iritgo.skillfull.bullet.BulletTimer;
+import de.iritgo.skillfull.bullet.pattern.BulletPatternContext;
+
 
 public class MoveAction extends BulletAction
 {
-	private float x;
-	private float y;
-	private Bullet initBullet;
-
-	public MoveAction (Bullet bullet)
+	public MoveAction ()
 	{
-		initBullet = new Bullet (bullet);
-		actionDone = false;
+
+		// actionDone = false;
+	}
+
+	@Override
+	protected void actionInit ()
+	{
 	}
 
 	@Override
 	public boolean perform (int delta, BulletDirector bulletDirector, Bullet bullet)
 	{
 
-		float posInTime = (float) getTime () / (float) getStopTime ();
-		if (posInTime > 1)
-		{
-			posInTime = 1;
-		}
-		bullet.setX (Utils.lerp (initBullet.getX (), x, posInTime));
-		bullet.setY (Utils.lerp (initBullet.getY (), y, posInTime));
-		
-		bullet.setRotation (Utils.lerpDegrees (bullet.getRotation (), Utils.angleInDegrees (initBullet.getX (), initBullet.getY (), x, y), posInTime));
+		// float posInTime = (float) getTime () / (float) getStopTime ();
+		// if (posInTime > 1)
+		// {
+		// posInTime = 1;
+		// }
+		// bullet.setX (Utils.lerp (startX, x, posInTime));
+		// bullet.setY (Utils.lerp (startY, y, posInTime));
+		//
+		// bullet.setRotation (Utils.lerpDegrees (bullet.getRotation (),
+		// Utils.angleInDegrees (startX, startY, x, y), posInTime));
 
-//		System.out.println (posInTime + " : " + bullet.getX () + "/" + bullet.getY ());
-		return actionDone;
+		// System.out.println (posInTime + " : " + bullet.getX () + "/" +
+		// bullet.getY ());
+		return false;
 	}
 
 	public MoveAction to (float x, float y)
 	{
-		this.x = x;
-		this.y = y;
+		// this.x = x;
+		// this.y = y;
 		return this;
 	}
 
@@ -52,7 +59,7 @@ public class MoveAction extends BulletAction
 
 	public MoveAction dontWait ()
 	{
-		actionDone = true;
+		// actionDone = true;
 		return this;
 	}
 }

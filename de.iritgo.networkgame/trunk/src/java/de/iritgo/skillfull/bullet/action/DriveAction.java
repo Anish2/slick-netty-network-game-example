@@ -4,110 +4,80 @@ package de.iritgo.skillfull.bullet.action;
 
 import com.artemis.utils.Utils;
 
+import de.iritgo.skillfull.bullet.ActionData;
 import de.iritgo.skillfull.bullet.Bullet;
 import de.iritgo.skillfull.bullet.BulletAction;
 import de.iritgo.skillfull.bullet.BulletDirector;
-import de.iritgo.skillfull.bullet.BulletTimer;
+import de.iritgo.skillfull.bullet.pattern.BulletPattern;
+import de.iritgo.skillfull.bullet.pattern.BulletPatternContext;
 
 
 public class DriveAction extends BulletAction
 {
-	private float x;
+	private BulletPattern patternContext;
 
-	private float y;
-
-	private Bullet initBullet;
-
-	private float acceleration;
-
-	private float rotation;
-
-	private float movedWay;
-
-	private float speed;
-
-	private float lastMovedWay;
-
-	private float startX;
-
-	private float startY;
-
-	private float startRot;
-
-	public DriveAction (Bullet bullet)
+	@Override
+	protected void actionInit ()
 	{
-		initBullet = new Bullet (bullet);
-		startX = initBullet.getX ();
-		startY = initBullet.getY ();
-		startRot = initBullet.getRotation ();
-		rotation = - 1;
-		acceleration = 0.0f;
-		actionDone = false;
+		setRotation (-1);
+		setAcceleration (0.0f);
+		setActionDone (false);
+		setMovedWay (0);
+		activate ();
 	}
 
 	@Override
-	public boolean perform (int delta, BulletDirector bulletDirector, Bullet bullet)
+	public boolean perform (int time, BulletDirector bulletDirector, Bullet bullet)
 	{
-		int time = getTime ();
-
 		float posInTime = (float) time / (float) getStopTime ();
 		if (posInTime > 1)
 		{
 			posInTime = 1;
 		}
 
-		if (rotation != - 1)
-			bullet.setRotation (Utils.lerpDegrees (startRot, rotation, posInTime));
+		if (getRotation () != - 1)
+			bullet.setRotation (Utils.lerpDegrees (getStartRotation (), getRotation (), posInTime));
 
-		movedWay = (0.5f * (acceleration / 1000) * ((time) * (time))) + ((speed / 1000) * (time));
+		if (getSpeed () == 0 && getAcceleration () == 0)
+			return false;
 
-		if (speed == 0 && acceleration == 0)
-			return actionDone;
+		float way = (0.5f * (getAcceleration () / 1000) * ((time) * (time))) + ((getSpeed () / 1000) * (time));
 
 		float rotation = bullet.getRotation ();
-		x += Utils.getXAtEndOfRotatedLineByOrigin (0, movedWay - lastMovedWay, rotation);
-		y += Utils.getYAtEndOfRotatedLineByOrigin (0, movedWay - lastMovedWay, rotation);
-		lastMovedWay = movedWay;
+		float currentX = getCurrentX ();
+		float currentY = getCurrentY ();
+		float movedWay = getMovedWay ();
+		currentX += Utils.getXAtEndOfRotatedLineByOrigin (0, way - movedWay, rotation);
+		currentY += Utils.getYAtEndOfRotatedLineByOrigin (0, way - movedWay, rotation);
 
-		bullet.setX (startX + x);
-		bullet.setY (startY + y);
-//		System.out.println ("Mist: " + bullet.getX () + ">" + time + " weg: " + movedWay);
-		return actionDone;
+		setCurrentX (currentX);
+		setCurrentY (currentY);
+
+		setMovedWay (way);
+
+		bullet.setX (getStartX () + currentX);
+		bullet.setY (getStartY () + currentY);
+//		System.out.println ("Mist: " + bullet.getX () + ">" + time + " weg: " + (way));
+		return false;
 	}
 
 	@Override
-	public void performDone (int delta, BulletDirector bulletDirector, Bullet bullet)
+	public void performDone (int time, BulletDirector bulletDirector, Bullet bullet)
 	{
-		perform (delta, bulletDirector, bullet);
-		startX = bullet.getX ();
-		startY = bullet.getY ();
-		startRot = bullet.getRotation ();
-		int time = getTime ();
-
-		inactive ();
-		bullet.setMovedWay (movedWay);
-		bullet.setAcceleration (acceleration);
-		if (rotation != -1)
-			bullet.setRotation (rotation);
-
-		bullet.setLastSpeed (((acceleration) * (time)) + (speed));
+		perform (time, bulletDirector, bullet);
+		if (getRotation () != - 1)
+			bullet.setRotation (getRotation ());
 	}
 
 	public DriveAction acceleration (float acceleration)
 	{
-		this.acceleration = acceleration;
-		return this;
-	}
-
-	public DriveAction movedWay (float movedWay)
-	{
-		this.movedWay = movedWay;
+		setAcceleration (acceleration);
 		return this;
 	}
 
 	public DriveAction rotate (float rotation)
 	{
-		this.rotation = rotation;
+		setRotation (rotation);
 		return this;
 	}
 
@@ -119,7 +89,7 @@ public class DriveAction extends BulletAction
 
 	public DriveAction dontWait ()
 	{
-		actionDone = true;
+		setActionDone (true);
 		return this;
 	}
 
@@ -132,13 +102,7 @@ public class DriveAction extends BulletAction
 
 	public DriveAction speed (float speed)
 	{
-		this.speed = speed;
-		return this;
-	}
-
-	public DriveAction withLastSpeed ()
-	{
-		speed = initBullet != null ? initBullet.getLastSpeed () : speed;
+		setSpeed (speed);
 		return this;
 	}
 }
