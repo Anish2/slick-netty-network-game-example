@@ -19,73 +19,69 @@ public class BulletDirector
 
 	private int bulletDone;
 
-	private Bag<BulletAction> actions = null;
-
+	private BulletAction action = null;
 
 	SequenceDirectorIterator seqDirector;
 
 	public BulletDirector ()
 	{
 		bulletTimer = new BulletTimer ();
-		actions = new Bag<BulletAction> (10);
 	}
 
 	public void update (int delta)
 	{
 		bulletTimer.update (delta);
 
-		if (actions.size () == 0)
+		boolean doMore = true;
+		while (doMore)
 		{
-			actions = nextActions (actions);
-		}
-		for (int i = 0; i < bullets.size (); ++i)
-		{
-			Bullet bullet = bullets.get (i);
-			if (bullet != null)
+			if (action != null)
 			{
-				performActions (delta, bullet, actions);
+				for (int i = 0; i < bullets.size (); ++i)
+				{
+					Bullet bullet = bullets.get (i);
+					if (bullet != null)
+					{
+						performActions (delta, bullet, action);
+					}
+				}
 			}
-		}
-		for (int i = 0 ; i < actions.size () ; ++i)
-		{
-			BulletAction action = actions.get (i);
-			if (! action.isInTime ())
+			if (action == null || ! action.isInTime ())
 			{
-				actions.remove (i--);
+				if (action != null && action.getStopTime () != 0)
+					doMore = false;
+				action = null;
+				action = nextAction ();
+			}
+			else
+			{
+				doMore = false;
 			}
 		}
 	}
 
-	private boolean performActions (int delta, Bullet bullet, Bag<BulletAction> actions)
+	private boolean performActions (int delta, Bullet bullet, BulletAction action)
 	{
-		for (int i = 0 ; i < actions.size () ; ++i)
+		action.init (bullet);
+		if (action.isInTime ())
+			action.perform (this, bullet);
+		else
 		{
-			BulletAction action = actions.get (i);
-			action.init (bullet);
-			if (action.isInTime ())
-				action.perform (this, bullet);
-			else
-			{
-				action.updateOverlapTime ();
-				action.performDone (this, bullet);
-				action.setInit (false);
-			}
+			action.updateOverlapTime ();
+			action.performDone (this, bullet);
+			action.setInit (false);
 		}
 		return false;
 	}
 
-	private Bag<BulletAction> nextActions (Bag<BulletAction> actions)
+	private BulletAction nextAction ()
 	{
-		actions.clear ();
-		while (seqDirector.hasNext ())
+		if (seqDirector.hasNext ())
 		{
 			BulletAction action = seqDirector.next ();
 			action.setBulletTimer (bulletTimer);
 			action.updateTime (0);
-			actions.add (action);
-			if (action.getStopTime () == 0)
-				continue;
-			return actions;
+			return action;
 		}
 		return null;
 	}

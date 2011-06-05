@@ -6,11 +6,19 @@ public class RandomPattern implements BulletPattern
 {
 	private Random random;
 	private int range;
+	private int start;
 
 	public RandomPattern (int range)
 	{
 		this.random = new Random ();
 		this.range = range;
+	}
+
+	public RandomPattern (int start, int range)
+	{
+		this.random = new Random ();
+		this.range = range;
+		this.start = start;
 	}
 
 	@Override
@@ -22,7 +30,7 @@ public class RandomPattern implements BulletPattern
 	@Override
 	public float getOffsetRotation ()
 	{
-		return random.nextInt (range);
+		return start + random.nextInt (range);
 	}
 
 	@Override

@@ -145,7 +145,8 @@ public abstract class BulletAction
 
 	protected void setRotation (float rotation)
 	{
-		actionData.currentRotation[actionDataIndex] = rotation;
+		for (int i = 0 ; i < actionData.currentSpeed.length; ++i)
+			actionData.currentRotation[i] = rotation + pattern.getOffsetRotation ();
 	}
 
 	protected float getAcceleration ()
@@ -155,7 +156,8 @@ public abstract class BulletAction
 
 	protected void setAcceleration (float acceleration)
 	{
-		actionData.currentAcceleration[actionDataIndex] = acceleration;
+		for (int i = 0 ; i < actionData.currentAcceleration.length; ++i)
+			actionData.currentAcceleration[i] = acceleration;
 	}
 
 	protected float getSpeed ()
@@ -166,7 +168,7 @@ public abstract class BulletAction
 	protected void setSpeed (float speed)
 	{
 		for (int i = 0 ; i < actionData.currentSpeed.length; ++i)
-			actionData.currentSpeed[i] = speed;
+			actionData.currentSpeed[i] = speed  + pattern.getOffsetSpeed ();
 	}
 
 	protected float getCurrentX ()

@@ -88,7 +88,7 @@ public class NetworkGame extends BasicTWLGameState
 			}
 		};
 
-		bulletDirector.createBullets (5000);
+		bulletDirector.createBullets (50);
 
 //		for (int i = 0; i < 2000 ; i += 11)
 //		{
