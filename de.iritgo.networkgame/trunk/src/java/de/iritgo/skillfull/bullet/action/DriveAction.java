@@ -19,8 +19,8 @@ public class DriveAction extends BulletAction
 	@Override
 	protected void actionInit ()
 	{
-		setRotation (-1);
-		setAcceleration (0.0f);
+//		setRotation (-1);
+//		setAcceleration (0.0f);
 		setActionDone (false);
 		setMovedWay (0);
 		activate ();
@@ -34,7 +34,7 @@ public class DriveAction extends BulletAction
 		{
 			posInTime = 1;
 		}
-
+		
 		if (getRotation () != - 1)
 			bullet.setRotation (Utils.lerpDegrees (getStartRotation (), getRotation (), posInTime));
 

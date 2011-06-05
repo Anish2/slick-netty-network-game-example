@@ -180,7 +180,7 @@ public class Start extends TWLStateBasedGame {
 				}
 		};
  */
-		app.setDisplayMode(800, 600, false);
+		app.setDisplayMode(1366, 768, true);
 		app.start();
 
 	}
