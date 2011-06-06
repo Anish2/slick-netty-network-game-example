@@ -49,8 +49,8 @@ public class Start extends TWLStateBasedGame {
 	{
 		String serverIp = "";
 		String serverPort = "";
-		
-		
+
+
 		if (args.length == 2)
 		{
 			serverIp = args[0];
@@ -180,7 +180,7 @@ public class Start extends TWLStateBasedGame {
 				}
 		};
  */
-		app.setDisplayMode(1366, 768, true);
+		app.setDisplayMode(1280, 1024, false);
 		app.start();
 
 	}
