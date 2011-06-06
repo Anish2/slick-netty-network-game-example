@@ -64,6 +64,8 @@ public class NetworkGame extends BasicTWLGameState
 
 	private int delta;
 
+	private int xxpos;
+
 	public static Sprite rocket = new Sprite ("data/rocket.png");
 
 
@@ -88,7 +90,7 @@ public class NetworkGame extends BasicTWLGameState
 			}
 		};
 
-		bulletDirector.createBullets (50);
+		bulletDirector.createBullets (1);
 
 //		for (int i = 0; i < 2000 ; i += 11)
 //		{
@@ -111,7 +113,7 @@ public class NetworkGame extends BasicTWLGameState
 		container.setVSync (true);
 		// Zeitscheibe auf 20ms
 //		container.setMinimumLogicUpdateInterval (60);
-		container.setSmoothDeltas (false);
+		container.setSmoothDeltas (true);
 		map = new TiledMap ("maps/BeerMap.tmx");
 
 		world = new GameWorld ();
@@ -144,11 +146,12 @@ public class NetworkGame extends BasicTWLGameState
 		blaTimer += delta;
 		if (blaTimer >= 200)
 		{
-			superBlub += (( 50f/ 1000f) * (float)blaTimer) ;
+			superBlub += (( 55f/ 1000f) * (float)blaTimer) ;
 			blaTimer = blaTimer - 200;
 		}
-		blub = (( 50f/ 1000f) * (float)blaTimer) ;
+		blub = (( 55f/ 1000f) * (float)blaTimer) ;
 		xpos = blub + superBlub;
+		xxpos += (0.0625f * delta);
 
 //		System.out.println ("Correct: " + xpos + ":::" + blaTimer);
 
@@ -190,7 +193,8 @@ public class NetworkGame extends BasicTWLGameState
 
 			g.drawImage (rocket.getImage (), (int)bullet.getX (), (int)bullet.getY ());
 		}
-		g.drawImage (rocket.getImage (), (int)60 + xpos, (int)250);
+		g.drawImage (rocket.getImage (), (int)60 + xpos, (int)200);
+		g.drawImage (rocket.getImage (), (int)60 + xxpos, (int)350);
 
 
 		g.drawString ("GameTime: " + world.getNetworkTime (), 100, 10);
