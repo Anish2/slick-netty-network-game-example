@@ -92,21 +92,21 @@ public class NetworkGame extends BasicTWLGameState
 
 		bulletDirector.createBullets (1);
 
-//		for (int i = 0; i < 2000 ; i += 11)
-//		{
-//			int fuck = 10 + new Random ().nextInt (10);
-//			blaTimer += fuck;
-//			if (blaTimer >= 200)
-//			{
-//				superBlub += (( 50f/ 1000f) * (float)blaTimer) ;
-//				blaTimer = blaTimer - 200;
-//			}
-//			blub = (( 50f/ 1000f) * (float)blaTimer) ;
-//			xpos = blub + superBlub;
-//			System.out.println ("Correct: " + (60 + xpos) + ":::" + blaTimer + " weg; " + blub);
-//			bulletDirector.update (fuck);
-//		}
-//		System.exit (0);
+		for (int i = 0; i < 2000 ; i += 11)
+		{
+			int fuck = 10 + new Random ().nextInt (10);
+			blaTimer += fuck;
+			if (blaTimer >= 200)
+			{
+				blaTimer = fuck;
+				superBlub = xpos;
+			}
+			blub = (( 50f/ 1000f) * (float)blaTimer) ;
+			xpos = blub + superBlub;
+			System.out.println ("Correct: " + (60 + xpos) + ":::" + blaTimer + " weg; " + blub);
+			bulletDirector.update (fuck);
+		}
+		System.exit (0);
 
 		container.setAlwaysRender (true);
 		container.setShowFPS (true);
@@ -146,14 +146,14 @@ public class NetworkGame extends BasicTWLGameState
 		blaTimer += delta;
 		if (blaTimer >= 200)
 		{
-			superBlub += (( 55f/ 1000f) * (float)blaTimer) ;
-			blaTimer = blaTimer - 200;
+			blaTimer = delta;
+			superBlub = xpos;
 		}
-		blub = (( 55f/ 1000f) * (float)blaTimer) ;
+		blub = (( 50f/ 1000f) * (float)blaTimer) ;
+//		System.out.println ("Correct: " + ((blub + superBlub - xpos)));
 		xpos = blub + superBlub;
 		xxpos += (0.0625f * delta);
 
-//		System.out.println ("Correct: " + xpos + ":::" + blaTimer);
 
 		bulletDirector.update (delta);
 
@@ -193,7 +193,8 @@ public class NetworkGame extends BasicTWLGameState
 
 			g.drawImage (rocket.getImage (), (int)bullet.getX (), (int)bullet.getY ());
 		}
-		g.drawImage (rocket.getImage (), (int)60 + xpos, (int)200);
+		for (int x = 0; x < 20; ++x)
+			g.drawImage (rocket.getImage (), (int)60 + xpos, (int)250 + (15 * x));
 		g.drawImage (rocket.getImage (), (int)60 + xxpos, (int)350);
 
 

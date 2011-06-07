@@ -48,8 +48,8 @@ public class BulletDirector
 			}
 			if (action == null || ! action.isInTime ())
 			{
-				if (action != null && action.getStopTime () != 0)
-					doMore = false;
+//				if (action != null && action.getStopTime () != 0)
+//					doMore = false;
 				action = null;
 				action = nextAction ();
 			}

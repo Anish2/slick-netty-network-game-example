@@ -41,7 +41,7 @@ public class DriveAction extends BulletAction
 		if (getSpeed () == 0 && getAcceleration () == 0)
 			return false;
 
-		float way = (0.5f * (getAcceleration () / 1000) * ((time) * (time))) + ((getSpeed () / 1000) * (time));
+		float way = (0.5f * (getAcceleration () / 1000f) * ((time) * (time))) + ((getSpeed () / 1000f) * (time));
 
 		float rotation = bullet.getRotation ();
 		float currentX = getCurrentX ();
@@ -57,14 +57,15 @@ public class DriveAction extends BulletAction
 
 		bullet.setX (getStartX () + currentX);
 		bullet.setY (getStartY () + currentY);
-//		System.out.println ("Mist: " + bullet.getX () + ">" + time + " weg: " + (way));
+		System.out.println ("Mist: " + bullet.getX () + ">" + time + " weg: " + (way));
 		return false;
 	}
 
 	@Override
 	public void performDone (int time, BulletDirector bulletDirector, Bullet bullet)
 	{
-		perform (time, bulletDirector, bullet);
+//		setMovedWay (0);
+//		perform (time, bulletDirector, bullet);
 		if (getRotation () != - 1)
 			bullet.setRotation (getRotation ());
 	}

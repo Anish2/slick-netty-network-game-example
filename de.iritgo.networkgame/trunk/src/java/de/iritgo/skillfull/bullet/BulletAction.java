@@ -119,7 +119,9 @@ public abstract class BulletAction
 	public void updateOverlapTime ()
 	{
 		if (stopTime != 0)
-			bulletTimer.setOverlapTime (bulletTimer.getTime () - (startTime + stopTime));
+		{
+			bulletTimer.setOverlapTime (bulletTimer.getDelta ());
+		}
 	}
 
 	public void activate ()

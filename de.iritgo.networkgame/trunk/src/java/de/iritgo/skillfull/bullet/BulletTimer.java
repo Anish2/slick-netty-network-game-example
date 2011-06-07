@@ -7,6 +7,7 @@ public class BulletTimer
 	private int startTime;
 	private int overlapTime;
 	private int firstDelta;
+	private int delta;
 
 	public BulletTimer (int stopTime)
 	{
@@ -21,6 +22,7 @@ public class BulletTimer
 
 	public void update (int delta)
 	{
+		this.delta = delta;
 		if (currentTime == 0)
 		{
 			firstDelta = delta;
@@ -74,5 +76,10 @@ public class BulletTimer
 	public int getFirstDelta ()
 	{
 		return firstDelta;
+	}
+
+	public int getDelta ()
+	{
+		return delta;
 	}
 }

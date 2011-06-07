@@ -40,14 +40,14 @@ public class BulletSeq extends SequenceDirectorIterator
 		while (true)
 		{
 //			produce (waitTimer ().start (startTime).stop (startTime + 1500));
-			pattern.setPattern (new RandomPattern (50));
+			pattern.setPattern (new RandomPattern (150));
 			pattern.setPattern (new DoNothingPattern ());
-			produce (position ().xy (60, 250));
+			produce (position ().xy (60, 260));
 			pattern.setPattern (new DoNothingPattern ());
 			produce (drive ().acceleration (0).rotate (0).dontWait ());
 			int x = 0;
-			while (x++ < 50)
-				produce (drive ().speed (55.0f).rotate (0).time (200));
+			while (x++ < 80)
+				produce (drive ().speed (50.0f).rotate (0).time (200));
 
 			pattern.setPattern (new DoNothingPattern ());
 			produce (drive ().rotate (180).time (10));
