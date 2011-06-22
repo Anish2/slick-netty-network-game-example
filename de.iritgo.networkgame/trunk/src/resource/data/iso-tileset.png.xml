@@ -1,0 +1,4 @@
+<sheet>
+	<sprite name="tile_test2.png" x="0" y="0" width="64" height="96" />
+	<sprite name="tile_test1.png" x="64" y="0" width="64" height="32" />
+</sheet>

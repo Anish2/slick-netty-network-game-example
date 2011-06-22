@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
+<map version="1.0" orientation="isometric" width="64" height="64" tilewidth="64" tileheight="32">
+ <tileset name="1" firstgid="1" tilewidth="64" tileheight="32">
+  <image source="../data/tile_test1.png"/>
+ </tileset>
+ <tileset name="2" firstgid="2" tilewidth="64" tileheight="96">
+  <image source="../data/tile_test2.png"/>
+ </tileset>
+ <layer name="Layer 0" width="64" height="64">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO2Y0QrDIAxF1f//6BFYIUujjSmMJN4DhTF92MmNU9va/xjKd30ybyzGs2L179+5fTKekdF+c73oytOUeZnh3hb/SrlfvTzYZz729GSFO4x27385Jp2z+mvZSX9Zm8p9QFj8V3XIzI5ndX8t/8ruBN/PPeu/CidmT2j7YGV/bQ/31CArK3drDaLguYNYe3tWgyhod7XVPHmutdYgmru8qz3VYOdeG81VonlY/HfPc1H9JU/5e5yj+z/1vjfvLPnP1jPhOcNI18zub/o9eu6E9p7mYncvi+46Y7b+K61xDXkuW/lXe2el/VbP/9xp/kN8jnietfDGv7W7byZ3QtujPf2dMXtCZjfbuzOv8RW7ztX8Ca9/tRqc2P+cU7PnnOrNOd2fONkdAAAAAAAAAAAAAAAAAAAA5OQDI+urJABAAAA=
+  </data>
+ </layer>
+ <layer name="Layer 1" width="64" height="64">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAAO3BMQEAAADCoPVPbQwfoAAAAAAAAAAAAAAAAAAAAIC3AYbSVKsAQAAA
+  </data>
+ </layer>
+</map>
