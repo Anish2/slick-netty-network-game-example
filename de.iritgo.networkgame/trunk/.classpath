@@ -13,7 +13,7 @@
 	<classpathentry kind="lib" path="lib/lwjgl_util.jar"/>
 	<classpathentry kind="lib" path="lib/lwjgl.jar"/>
 	<classpathentry kind="lib" path="lib/lzma.jar"/>
-	<classpathentry kind="lib" path="lib/slick.jar" sourcepath="/Slick"/>
+	<classpathentry kind="lib" path="lib/slick.jar" sourcepath="/other.Slick/src"/>
 	<classpathentry kind="lib" path="lib/tinylinepp.jar"/>
 	<classpathentry kind="lib" path="lib/iritgo-simplelife-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/netty-3.2.4.jar" sourcepath="/opt/java/netty-3.2.4"/>

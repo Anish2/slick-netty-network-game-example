@@ -92,21 +92,21 @@ public class NetworkGame extends BasicTWLGameState
 
 		bulletDirector.createBullets (1);
 
-		for (int i = 0; i < 2000 ; i += 11)
-		{
-			int fuck = 10 + new Random ().nextInt (10);
-			blaTimer += fuck;
-			if (blaTimer >= 200)
-			{
-				blaTimer = fuck;
-				superBlub = xpos;
-			}
-			blub = (( 50f/ 1000f) * (float)blaTimer) ;
-			xpos = blub + superBlub;
-			System.out.println ("Correct: " + (60 + xpos) + ":::" + blaTimer + " weg; " + blub);
-			bulletDirector.update (fuck);
-		}
-		System.exit (0);
+//		for (int i = 0; i < 2000 ; i += 11)
+//		{
+//			int fuck = 10 + new Random ().nextInt (10);
+//			blaTimer += fuck;
+//			if (blaTimer >= 200)
+//			{
+//				blaTimer = fuck;
+//				superBlub = xpos;
+//			}
+//			blub = (( 50f/ 1000f) * (float)blaTimer) ;
+//			xpos = blub + superBlub;
+//			System.out.println ("Correct: " + (60 + xpos) + ":::" + blaTimer + " weg; " + blub);
+//			bulletDirector.update (fuck);
+//		}
+//		System.exit (0);
 
 		container.setAlwaysRender (true);
 		container.setShowFPS (true);
@@ -114,7 +114,7 @@ public class NetworkGame extends BasicTWLGameState
 		// Zeitscheibe auf 20ms
 //		container.setMinimumLogicUpdateInterval (60);
 		container.setSmoothDeltas (true);
-		map = new TiledMap ("maps/BeerMap.tmx");
+		map = new TiledMap ("maps/iso-test2.tmx");
 
 		world = new GameWorld ();
 		boolean clientOnly = false;
@@ -155,7 +155,7 @@ public class NetworkGame extends BasicTWLGameState
 		xxpos += (0.0625f * delta);
 
 
-		bulletDirector.update (delta);
+//		bulletDirector.update (delta);
 
 		if (container.getInput ().isKeyPressed (Input.KEY_TAB))
 		{
@@ -183,19 +183,19 @@ public class NetworkGame extends BasicTWLGameState
 	public void render (GameContainer container, StateBasedGame arg1, Graphics g) throws SlickException
 	{
 		world.render (container, arg1, g);
-		for (int i = 0 ; i < bulletDirector.getBullets ().size (); ++i)
-		{
-			Bullet bullet = bulletDirector.getBullets ().get (i);
-			if (bullet.isHeadingActive ())
-				rocket.getImage ().setRotation (bullet.getHeading () + 90);
-			else
-				rocket.getImage ().setRotation (bullet.getRotation () + 90);
-
-			g.drawImage (rocket.getImage (), (int)bullet.getX (), (int)bullet.getY ());
-		}
-		for (int x = 0; x < 20; ++x)
-			g.drawImage (rocket.getImage (), (int)60 + xpos, (int)250 + (15 * x));
-		g.drawImage (rocket.getImage (), (int)60 + xxpos, (int)350);
+//		for (int i = 0 ; i < bulletDirector.getBullets ().size (); ++i)
+//		{
+//			Bullet bullet = bulletDirector.getBullets ().get (i);
+//			if (bullet.isHeadingActive ())
+//				rocket.getImage ().setRotation (bullet.getHeading () + 90);
+//			else
+//				rocket.getImage ().setRotation (bullet.getRotation () + 90);
+//
+//			g.drawImage (rocket.getImage (), (int)bullet.getX (), (int)bullet.getY ());
+//		}
+//		for (int x = 0; x < 20; ++x)
+//			g.drawImage (rocket.getImage (), (int)60 + xpos, (int)250 + (15 * x));
+//		g.drawImage (rocket.getImage (), (int)60 + xxpos, (int)350);
 
 
 		g.drawString ("GameTime: " + world.getNetworkTime (), 100, 10);
