@@ -66,6 +66,10 @@ public class NetworkGame extends BasicTWLGameState
 
 	private int xxpos;
 
+	private int mapX;
+
+	private int mapY;
+
 	public static Sprite rocket = new Sprite ("data/rocket.png");
 
 
@@ -114,6 +118,7 @@ public class NetworkGame extends BasicTWLGameState
 		// Zeitscheibe auf 20ms
 //		container.setMinimumLogicUpdateInterval (60);
 		container.setSmoothDeltas (true);
+//		map = new TiledMap ("maps/BeerMap.tmx");
 		map = new TiledMap ("maps/iso-test2.tmx");
 
 		world = new GameWorld ();
@@ -167,6 +172,14 @@ public class NetworkGame extends BasicTWLGameState
 	@Override
 	public void keyPressed (int key, char c)
 	{
+		if (key == Input.KEY_LEFT)
+			mapX -= 5;
+		if (key == Input.KEY_RIGHT)
+			mapX+=5;
+		if (key == Input.KEY_UP)
+			mapY-=5;
+		if (key == Input.KEY_DOWN)
+			mapY+=5;
 		super.keyPressed (key, c);
 	}
 
@@ -196,11 +209,17 @@ public class NetworkGame extends BasicTWLGameState
 //		for (int x = 0; x < 20; ++x)
 //			g.drawImage (rocket.getImage (), (int)60 + xpos, (int)250 + (15 * x));
 //		g.drawImage (rocket.getImage (), (int)60 + xxpos, (int)350);
-
+		int tileIndexX = (int) (mapX / map.getTileWidth ());
+		int tileIndexY = (int) (mapY / map.getTileHeight ());
+		map.render ((int) 0,
+						(int) 0, tileIndexX, tileIndexY,
+						(int) 1024 + map.getTileWidth (),
+						(int) 768 + map.getTileHeight ());
 
 		g.drawString ("GameTime: " + world.getNetworkTime (), 100, 10);
 		g.drawString ("TimeShift: " + client.getGameTimeManager ().getNetworkTimeShift (), 280, 10);
 		g.drawString ("Delta: " + delta, 450, 10);
+		g.drawString ("MapXY: " + mapX + ":" + mapY, 450, 60);
 	}
 
 	public int getID ()
